@@ -1,11 +1,11 @@
-# Powerlevel10k
-[![Gitter](https://badges.gitter.im/powerlevel10k/community.svg)](
-  https://gitter.im/powerlevel10k/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+# Powerlevel10k (Community Fork)
 
-- **THE PROJECT HAS VERY LIMITED SUPPORT**
-- **NO NEW FEATURES ARE IN THE WORKS**
-- **MOST BUGS WILL GO UNFIXED**
-- **HELP REQUESTS WILL BE IGNORED**
+> **Community-maintained fork of [Powerlevel10k](https://github.com/romkatv/powerlevel10k)**
+> by [Roman Perepelitsa (romkatv)](https://github.com/romkatv).
+>
+> The original project has been archived with limited support. This fork continues
+> development with bug fixes and community contributions. All credit for the original
+> work goes to romkatv — thank you for creating one of the best Zsh themes ever made. ❤️
 
 Powerlevel10k is a theme for Zsh. It emphasizes [speed](#uncompromising-performance),
 [flexibility](#extremely-customizable) and [out-of-the-box experience](#configuration-wizard).

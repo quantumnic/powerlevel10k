@@ -2082,6 +2082,12 @@ prompt_dir() {
       _p9k_foreground $_p9k__ret
       anchor_style+=$_p9k__ret
     fi
+    if (( $+parameters[_POWERLEVEL9K_DIR_ANCHOR_BACKGROUND] ||
+          $+parameters[_POWERLEVEL9K_${state_u}_ANCHOR_BACKGROUND] )); then
+      _p9k_color $state ANCHOR_BACKGROUND ''
+      _p9k_background $_p9k__ret
+      anchor_style+=$_p9k__ret
+    fi
     if [[ -n $anchor_style ]]; then
       (( expand )) && _p9k_escape_style $anchor_style || _p9k__ret=$anchor_style
       if [[ -z $last_style ]]; then
@@ -3495,7 +3501,10 @@ prompt_time() {
       if [[ $+__p9k_instant_prompt_active == 1 && $__p9k_instant_prompt_time_format == $_POWERLEVEL9K_TIME_FORMAT ]]; then
         _p9k__time=${__p9k_instant_prompt_time//\%/%%}
       else
+        local _p9k__saved_lc_time=$LC_TIME
+        LC_TIME=C
         _p9k__time=${${(%)_POWERLEVEL9K_TIME_FORMAT}//\%/%%}
+        LC_TIME=$_p9k__saved_lc_time
       fi
     fi
     if (( _POWERLEVEL9K_TIME_UPDATE_ON_COMMAND )); then
