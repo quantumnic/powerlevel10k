@@ -3391,6 +3391,8 @@ prompt_prompt_char() {
       _p9k_prompt_segment $0_OK_VIVIS "$_p9k_color1" 76 '' 0 '${(M)${:-$_p9k__keymap$_p9k__region_active}:#(vicmd1|vivis?|vivli?)}' 'Ⅴ'
     fi
   fi
+  # Ensure prompt char doesn't bleed into command output by resetting attributes (#3)
+  _p9k__prompt+='%b%k%f'
   (( _p9k__has_upglob )) || _p9k__prompt_char_saved[$_p9k__prompt_side$_p9k__segment_index$((!_p9k__status))]=$_p9k__prompt[len+1,-1]
 }
 
