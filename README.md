@@ -1639,6 +1639,11 @@ A more radical solution is to switch to prompt style without background. Type `p
 select *Lean*. This style has a modern lightweight look. As a bonus, it doesn't suffer from
 rendering imperfections that afflict powerline-style prompt.
 
+**Slanted and round separators** (U+E0B4–U+E0BC) are particularly prone to glitching because these
+Powerline Extra characters are rendered with incorrect width by some terminal emulators. If you
+experience this, use a **Nerd Font v3+** with a modern terminal (kitty, WezTerm, Alacritty, or
+iTerm2 3.5+), or switch to angled or vertical separators via `p10k configure`.
+
 ### Error: character not in range
 
 Type `echo '\u276F'`. If you get an error saying "zsh: character not in range", your locale
