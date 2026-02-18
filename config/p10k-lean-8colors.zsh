@@ -1232,6 +1232,11 @@
   # Tip: Remove the next line to always show docker_context.
   typeset -g POWERLEVEL9K_DOCKER_CONTEXT_SHOW_ON_COMMAND='docker|docker-compose'
 
+  ###############[ cpu_usage: CPU usage percentage ]###############
+  # CPU usage thresholds (percentage). Segment color changes at these levels.
+  # typeset -g POWERLEVEL9K_CPU_USAGE_HIGH_PCT=80
+  # typeset -g POWERLEVEL9K_CPU_USAGE_MEDIUM_PCT=50
+
   #############[ kubecontext: current kubernetes context (https://kubernetes.io/) ]#############
   # Show kubecontext only when the command you are typing invokes one of these tools.
   # Tip: Remove the next line to always show kubecontext.

@@ -2184,11 +2184,17 @@ _p9k_prompt_docker_machine_init() {
 prompt_docker_context() {
   local ctx="${DOCKER_CONTEXT:-}"
   if [[ -z $ctx ]]; then
-    local cfg="${DOCKER_CONFIG:-$HOME/.docker}/config.json"
-    if [[ -r $cfg ]]; then
-      # Fast extraction without jq dependency — handles simple JSON layout
-      if [[ "$(< $cfg)" == (#b)*'"currentContext"'[[:space:]]#:[[:space:]]#'"'([^\"']##)'"'* ]]; then
-        ctx=$match[1]
+    # Also check DOCKER_HOST — set by tools like colima, docker-machine, etc.
+    if [[ -n "${DOCKER_HOST:-}" ]]; then
+      ctx=${DOCKER_HOST##*/}
+      [[ -z $ctx ]] && ctx=${DOCKER_HOST}
+    else
+      local cfg="${DOCKER_CONFIG:-$HOME/.docker}/config.json"
+      if [[ -r $cfg ]]; then
+        # Fast extraction without jq dependency — handles simple JSON layout
+        if [[ "$(< $cfg)" == (#b)*'"currentContext"'[[:space:]]#:[[:space:]]#'"'([^\"']##)'"'* ]]; then
+          ctx=$match[1]
+        fi
       fi
     fi
   fi
@@ -2834,7 +2840,7 @@ _p9k_prompt_cpu_usage_compute() {
 }
 
 _p9k_prompt_cpu_usage_async() {
-  local -i pct
+  local -i pct i
   case $_p9k_os in
     OSX|BSD)
       (( $+commands[top] )) || return
@@ -2848,15 +2854,13 @@ _p9k_prompt_cpu_usage_async() {
       local -a curr
       curr=(${(s: :)$(head -1 /proc/stat 2>/dev/null)})
       shift curr  # remove "cpu" label
+      local -i total=0 idle_diff total_diff
+      for i in $curr; do (( total += i )); done
       if (( $+_p9k__cpu_prev_total )); then
-        local -i total=0 idle_diff total_diff
-        for i in $curr; do (( total += i )); done
         (( total_diff = total - _p9k__cpu_prev_total ))
         (( idle_diff = curr[4] - _p9k__cpu_prev_idle ))
         (( total_diff > 0 )) && (( pct = 100 * (total_diff - idle_diff) / total_diff ))
       fi
-      local -i total=0
-      for i in $curr; do (( total += i )); done
       typeset -gi _p9k__cpu_prev_total=$total
       typeset -gi _p9k__cpu_prev_idle=${curr[4]}
     ;;
