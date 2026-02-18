@@ -6857,7 +6857,14 @@ function _p9k_restore_special_params() {
 }
 
 function _p9k_on_expand() {
-  (( _p9k__expanded && ! ${+__p9k_instant_prompt_active} )) && [[ "${langinfo[CODESET]}" == (utf|UTF)(-|)8 ]] && return
+  if (( _p9k__expanded && ! ${+__p9k_instant_prompt_active} )); then
+    # Use case statement to avoid requiring extended_glob for the early return.
+    # When extended_glob is not set (e.g. during tab completion), the pattern
+    # (utf|UTF)(-|)8 causes "bad pattern" errors (issue #2887).
+    case "${langinfo[CODESET]}" in
+      utf-8|UTF-8|utf8|UTF8) return;;
+    esac
+  fi
 
   eval "$__p9k_intro_no_locale"
 

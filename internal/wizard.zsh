@@ -1691,7 +1691,8 @@ function ask_zshrc_edit() {
            ! zshrc_backup="$(mktemp $tmpdir/.zshrc.XXXXXXXXXX 2>/dev/null)"; then
           zshrc_backup=$tmpdir/.zshrc.$EPOCHREALTIME
         fi
-        cp -p $__p9k_zshrc $zshrc_backup                   || quit -c
+        cp -p $__p9k_zshrc $zshrc_backup 2>/dev/null ||
+          cp $__p9k_zshrc $zshrc_backup                    || quit -c
         local -i writable=1
         if [[ ! -w $zshrc_backup ]]; then
           chmod u+w -- $zshrc_backup                       || quit -c
@@ -1967,7 +1968,7 @@ function change_zshrc() {
   (( write_zshrc )) || return 0
 
   local tmp=$__p9k_zshrc.${(%):-%n}.tmp.$$
-  [[ ! -e $__p9k_zshrc ]] || cp -p $__p9k_zshrc $tmp || return
+  [[ ! -e $__p9k_zshrc ]] || cp -p $__p9k_zshrc $tmp 2>/dev/null || cp $__p9k_zshrc $tmp || return
 
   {
     local -i writable=1
