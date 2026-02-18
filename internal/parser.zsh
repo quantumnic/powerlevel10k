@@ -318,13 +318,13 @@ function _p9k_parse_buffer() {
               continue
             fi
           fi
-          : ${token::=${(Q)${~token}}}
+          : ${token::=${(Q)${~token}}} 2>/dev/null || : ${token::=${(Q)token}}
           ;;
         p2)
           if [[ -n $prev ]]; then
             prev=
           else
-            : ${token::=${(Q)${~token}}}
+            : ${token::=${(Q)${~token}}} 2>/dev/null || : ${token::=${(Q)token}}
             if [[ $token == '{'$~id'}' ]]; then
               state=p2x
               prev=$token
@@ -339,7 +339,7 @@ function _p9k_parse_buffer() {
             token=$prev
             prev=
           else
-            : ${token::=${(Q)${~token}}}
+            : ${token::=${(Q)${~token}}} 2>/dev/null || : ${token::=${(Q)token}}
             case $token in
               '{'$~id'}') prev=$token; state=px; continue;;
               [^-]*)                                     ;;
@@ -354,7 +354,7 @@ function _p9k_parse_buffer() {
             token=$prev
             prev=
           else
-            : ${token::=${(Q)${~token}}}
+            : ${token::=${(Q)${~token}}} 2>/dev/null || : ${token::=${(Q)token}}
             if [[ $token == '{'$~id'}' ]]; then
               state=p1x
               prev=$token

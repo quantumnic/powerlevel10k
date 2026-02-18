@@ -4835,7 +4835,8 @@ typeset -gra __p9k_nordvpn_tag=(
 function _p9k_fetch_nordvpn_status() {
   setopt err_return no_multi_byte
   local REPLY
-  zsocket /run/nordvpn/nordvpnd.sock
+  # Set a timeout for the socket connection to prevent hanging (#6)
+  zsocket -t 2 /run/nordvpn/nordvpnd.sock 2>/dev/null || return 1
   local -i fd=REPLY
   {
     print -nu $fd 'PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n\0\0\0\4\1\0\0\0\0\0\0;\1\4\0\0\0\1\203\206E\213b\270\327\2762\322z\230\326j\246A\206\240\344\35\23\235\t_\213\35u\320b\r&=LMedz\212\232\312\310\264\307`+\262\332\340@\2te\206M\2035\5\261\37\0\0\5\0\1\0\0\0\1\0\0\0\0\0\0\0\25\1\4\0\0\0\3\203\206E\215b\270\327\2762\322z\230\334\221\246\324\177\302\301\300\277\0\0\5\0\1\0\0\0\3\0\0\0\0\0'
@@ -4929,10 +4930,6 @@ function _p9k_fetch_nordvpn_status() {
 #   POWERLEVEL9K_NORDVPN_CONNECTING_CONTENT_EXPANSION='${P9K_NORDVPN_COUNTRY_CODE}'
 #   POWERLEVEL9K_NORDVPN_CONNECTING_BACKGROUND=cyan
 function prompt_nordvpn() {
-  # This prompt segment is broken. See https://github.com/romkatv/powerlevel10k/issues/2860.
-  # It is disabled until it is fixed.
-  return
-
   unset $__p9k_nordvpn_tag P9K_NORDVPN_COUNTRY_CODE
   [[ -e /run/nordvpn/nordvpnd.sock ]] || return
   _p9k_fetch_nordvpn_status 2>/dev/null || return
@@ -7183,6 +7180,12 @@ function _p9k_reset_prompt() {
   fi
 }
 
+# Handle terminal resize by forcing a full prompt redraw (#4).
+function _p9k_trapwinch() {
+  zle && _p9k__expanded=0 && _p9k_reset_prompt
+}
+trap '_p9k_trapwinch' WINCH
+
 # Does ZSH have a certain off-by-one bug that triggers when PROMPT overflows to a new line?
 #
 # Bug: https://github.com/zsh-users/zsh/commit/d8d9fee137a5aa2cf9bf8314b06895bfc2a05518.
@@ -7964,6 +7967,9 @@ function _p9k_deschedule_redraw() {
 
 function _p9k_widget_hook() {
   _p9k_deschedule_redraw
+
+  # Skip during tab-completion to avoid interfering with completion state (#2)
+  [[ "$WIDGET" == (complete-word|expand-or-complete|menu-complete|reverse-menu-complete|menu-expand-or-complete|expand-or-complete-prefix|_complete_help|_correct_word|_expand_alias|_expand_word|_history_complete_word|_most_recent_file|_next_tags|_read_comp) ]] && return
 
   if (( ${+functions[p10k-on-post-widget]} || ${#_p9k_show_on_command} )); then
     local -a P9K_COMMANDS
