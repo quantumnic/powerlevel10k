@@ -26,6 +26,8 @@
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
     # os_icon               # os identifier
+    root_indicator          # root user indicator
+    ssh                     # connected via SSH
     dir                     # current directory
     vcs                     # git status
     # =========================[ Line #2 ]=========================
@@ -78,6 +80,7 @@
     gcloud                  # google cloud cli account and project (https://cloud.google.com/)
     google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
     toolbox                 # toolbox name (https://github.com/containers/toolbox)
+    docker_context          # active docker context (https://docs.docker.com/engine/context/)
     context                 # user@hostname
     nordvpn                 # nordvpn connection status, linux only (https://nordvpn.com/)
     ranger                  # ranger shell (https://github.com/ranger/ranger)
@@ -90,6 +93,7 @@
     nix_shell               # nix shell (https://nixos.org/nixos/nix-pills/developing-with-nix-shell.html)
     chezmoi_shell           # chezmoi shell (https://www.chezmoi.io/)
     # vpn_ip                # virtual private network indicator
+    # cpu_usage              # CPU usage percentage (new)
     # load                  # CPU load
     # disk_usage            # disk usage
     # ram                   # free RAM
@@ -1222,6 +1226,11 @@
   typeset -g POWERLEVEL9K_HASKELL_STACK_ALWAYS_SHOW=true
   # Custom icon.
   # typeset -g POWERLEVEL9K_HASKELL_STACK_VISUAL_IDENTIFIER_EXPANSION='⭐'
+
+  ##########[ docker_context: active docker context (https://docs.docker.com/engine/context/) ]##########
+  # Show docker_context only when the command you are typing invokes docker.
+  # Tip: Remove the next line to always show docker_context.
+  typeset -g POWERLEVEL9K_DOCKER_CONTEXT_SHOW_ON_COMMAND='docker|docker-compose'
 
   #############[ kubecontext: current kubernetes context (https://kubernetes.io/) ]#############
   # Show kubecontext only when the command you are typing invokes one of these tools.

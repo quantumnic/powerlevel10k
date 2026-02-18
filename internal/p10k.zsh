@@ -2183,10 +2183,13 @@ _p9k_prompt_docker_machine_init() {
 # Reads from $DOCKER_CONTEXT env var or ~/.docker/config.json.
 prompt_docker_context() {
   local ctx="${DOCKER_CONTEXT:-}"
-  if [[ -z $ctx && -r ~/.docker/config.json ]]; then
-    # Fast extraction without jq dependency — handles simple JSON layout
-    if [[ "$(< ~/.docker/config.json)" == (#b)*'"currentContext"'[[:space:]]#:[[:space:]]#'"'([^\"']##)'"'* ]]; then
-      ctx=$match[1]
+  if [[ -z $ctx ]]; then
+    local cfg="${DOCKER_CONFIG:-$HOME/.docker}/config.json"
+    if [[ -r $cfg ]]; then
+      # Fast extraction without jq dependency — handles simple JSON layout
+      if [[ "$(< $cfg)" == (#b)*'"currentContext"'[[:space:]]#:[[:space:]]#'"'([^\"']##)'"'* ]]; then
+        ctx=$match[1]
+      fi
     fi
   fi
   [[ -n $ctx && $ctx != default ]] || return
@@ -7787,6 +7790,8 @@ _p9k_init_params() {
   esac
   _p9k_declare -F POWERLEVEL9K_LOAD_WARNING_PCT 50
   _p9k_declare -F POWERLEVEL9K_LOAD_CRITICAL_PCT 70
+  _p9k_declare -i POWERLEVEL9K_CPU_USAGE_HIGH_PCT 80
+  _p9k_declare -i POWERLEVEL9K_CPU_USAGE_MEDIUM_PCT 50
   _p9k_declare -b POWERLEVEL9K_NODE_VERSION_PROJECT_ONLY 0
   _p9k_declare -b POWERLEVEL9K_PHP_VERSION_PROJECT_ONLY 0
   _p9k_declare -b POWERLEVEL9K_DOTNET_VERSION_PROJECT_ONLY 1
