@@ -5498,12 +5498,11 @@ _p9k_prompt_wifi_async() {
         _wifi_iface="$(command networksetup -listallhardwareports 2>/dev/null |
           command awk '/Wi-Fi|AirPort/{getline; print $NF}')"
         if [[ -n $_wifi_iface ]]; then
-          # Check if the interface is actually active before querying SSID
-          if ! command ipconfig getsummary "$_wifi_iface" 2>/dev/null |
-               command grep -Fxq '  Active : FALSE'; then
-            local _fallback_ssid
-            _fallback_ssid="$(command networksetup -listpreferredwirelessnetworks "$_wifi_iface" 2>/dev/null |
-              command sed -n '2s/^	//p')"
+          # Use -getairportnetwork to get the *current* SSID, not just preferred networks
+          local _fallback_out
+          _fallback_out="$(command networksetup -getairportnetwork "$_wifi_iface" 2>/dev/null)"
+          if [[ $_fallback_out == 'Current Wi-Fi Network: '* ]]; then
+            local _fallback_ssid=${_fallback_out#Current Wi-Fi Network: }
             [[ -n $_fallback_ssid ]] && ssid=$_fallback_ssid
           fi
         fi

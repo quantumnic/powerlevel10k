@@ -1,7 +1,6 @@
 typeset -grA __p9k_pb_cmd_skip=(
   '}'         'always'  # handled specially
   '{'         ''
-  '{'         ''
   '|'         ''
   '||'        ''
   '&'         ''
