@@ -560,7 +560,12 @@ _p9k_vcs_style() {
   if [[ -n $_p9k__ret ]]; then
     _p9k__ret[-1,-1]=''
   else
-    local style=%b  # TODO: support bold
+    local style=%b
+    # Support bold styling via POWERLEVEL9K_VCS_*_BOLD parameter
+    local bold_var=_POWERLEVEL9K_VCS_${1}_BOLD
+    if (( ${(P)bold_var:-0} )); then
+      style="%B${style}"
+    fi
     _p9k_color prompt_vcs_$1 BACKGROUND "${__p9k_vcs_states[$1]}"
     _p9k_background $_p9k__ret
     style+=$_p9k__ret
@@ -3910,10 +3915,16 @@ _p9k_vcs_info_init() {
   zstyle ':vcs_info:hg*:*' get-bookmarks true
   zstyle ':vcs_info:hg*+gen-hg-bookmark-string:*' hooks hg-bookmarks
 
-  # TODO: fix the %b (branch) format for svn. Using %b breaks color-encoding of the foreground
-  # for the rest of the powerline.
-  zstyle ':vcs_info:svn*:*' formats "$prefix%c%u"
-  zstyle ':vcs_info:svn*:*' actionformats "$prefix%c%u %F{$_POWERLEVEL9K_VCS_ACTIONFORMAT_FOREGROUND}| %a%f"
+  # For SVN, include branch via %b wrapped in explicit foreground color reset to prevent
+  # color-encoding bleed into the rest of the powerline.
+  if (( _POWERLEVEL9K_HIDE_BRANCH_ICON )); then
+    zstyle ':vcs_info:svn*:*' formats "$prefix%b%c%u"
+    zstyle ':vcs_info:svn*:*' actionformats "$prefix%b%c%u %F{$_POWERLEVEL9K_VCS_ACTIONFORMAT_FOREGROUND}| %a%f"
+  else
+    _p9k_get_icon '' VCS_BRANCH_ICON
+    zstyle ':vcs_info:svn*:*' formats "$prefix$_p9k__ret%b%c%u"
+    zstyle ':vcs_info:svn*:*' actionformats "$prefix$_p9k__ret%b%c%u %F{$_POWERLEVEL9K_VCS_ACTIONFORMAT_FOREGROUND}| %a%f"
+  fi
 
   if (( _POWERLEVEL9K_SHOW_CHANGESET )); then
     zstyle ':vcs_info:*' get-revision true

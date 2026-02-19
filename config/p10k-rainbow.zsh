@@ -94,7 +94,7 @@
     chezmoi_shell           # chezmoi shell (https://www.chezmoi.io/)
     # vi_mode               # vi mode (you don't need this if you've enabled prompt_char)
     # vpn_ip                # virtual private network indicator
-    # cpu_usage              # CPU usage percentage (new)
+    # cpu_usage              # CPU usage percentage
     # load                  # CPU load
     # disk_usage            # disk usage
     # ram                   # free RAM

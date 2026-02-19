@@ -93,7 +93,7 @@
     nix_shell               # nix shell (https://nixos.org/nixos/nix-pills/developing-with-nix-shell.html)
     chezmoi_shell           # chezmoi shell (https://www.chezmoi.io/)
     # vpn_ip                # virtual private network indicator
-    # cpu_usage              # CPU usage percentage (new)
+    # cpu_usage              # CPU usage percentage
     # load                  # CPU load
     # disk_usage            # disk usage
     # ram                   # free RAM
