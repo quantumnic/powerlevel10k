@@ -8107,8 +8107,11 @@ function _p9k_deschedule_redraw() {
 function _p9k_widget_hook() {
   _p9k_deschedule_redraw
 
-  # Skip during tab-completion to avoid interfering with completion state (#2)
+  # Skip during tab-completion to avoid interfering with completion state (#2, #2912)
   [[ "$WIDGET" == (complete-word|expand-or-complete|menu-complete|reverse-menu-complete|menu-expand-or-complete|expand-or-complete-prefix|_complete_help|_correct_word|_expand_alias|_expand_word|_history_complete_word|_most_recent_file|_next_tags|_read_comp) ]] && return
+  # Skip during menu-select (zstyle ':completion:*' menu select) to prevent
+  # SHOW_ON_COMMAND from resetting the prompt and clearing the menu (#2912)
+  [[ "${KEYMAP:-}" == menuselect ]] && return
 
   if (( ${+functions[p10k-on-post-widget]} || ${#_p9k_show_on_command} )); then
     local -a P9K_COMMANDS
@@ -8165,6 +8168,8 @@ function _p9k_widget() {
 
 function _p9k_widget_zle-line-pre-redraw-impl() {
   (( __p9k_enabled )) && [[ $CONTEXT == start ]] || return 0
+  # Skip during menu-select to avoid clearing the completion menu (#2912)
+  [[ "${KEYMAP:-}" == menuselect ]] && return 0
   ! (( ${+functions[p10k-on-post-widget]} || ${#_p9k_show_on_command} || _p9k__restore_prompt_fd || _p9k__redraw_fd )) &&
       [[ ${KEYMAP:-} != vicmd ]] &&
       return
