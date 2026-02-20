@@ -6345,7 +6345,10 @@ _p9k_dump_instant_prompt() {
         IFS= read -r gitstatus_header <$gitstatus_dir/install.info || return
       fi
       >&$fd print -r -- '[[ -t 0 && -t 1 && -t 2 && -o interactive && -o zle && -o no_xtrace ]] &&
-  ! (( ${+__p9k_instant_prompt_disabled} || ZSH_SUBSHELL || ${+ZSH_SCRIPT} || ${+ZSH_EXECUTION_STRING} )) || return 0'
+  ! (( ${+__p9k_instant_prompt_disabled} || ZSH_SUBSHELL || ${+ZSH_SCRIPT} || ${+ZSH_EXECUTION_STRING} )) || return 0
+  # Auto-disable instant prompt for AI coding agents (Cursor, Copilot, Windsurf)
+  # that cannot detect command completion with instant prompt active (#2865).
+  [[ -z "$VSCODE_INJECTION" ]] || return 0'
       >&$fd print -r -- "() {
   $__p9k_intro_no_locale
   typeset -gi __p9k_instant_prompt_disabled=1
