@@ -95,6 +95,7 @@
     # vi_mode               # vi mode (you don't need this if you've enabled prompt_char)
     # vpn_ip                # virtual private network indicator
     # cpu_usage              # CPU usage percentage
+    # ram_usage              # RAM usage percentage
     # load                  # CPU load
     # disk_usage            # disk usage
     # ram                   # free RAM
@@ -1381,6 +1382,11 @@
   # CPU usage thresholds (percentage). Segment color changes at these levels.
   # typeset -g POWERLEVEL9K_CPU_USAGE_HIGH_PCT=80
   # typeset -g POWERLEVEL9K_CPU_USAGE_MEDIUM_PCT=50
+
+  ###############[ ram_usage: RAM usage percentage ]###############
+  # RAM usage thresholds (percentage). Segment color changes at these levels.
+  # typeset -g POWERLEVEL9K_RAM_USAGE_HIGH_PCT=80
+  # typeset -g POWERLEVEL9K_RAM_USAGE_MEDIUM_PCT=50
   typeset -g POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|helm|kubens|kubectx|oc|istioctl|kogito|k9s|helmfile|flux|fluxctl|stern|kubeseal|skaffold|kubent|kubecolor|cmctl|sparkctl'
 
   # Kubernetes context classes for the purpose of using different colors, icons and expansions with

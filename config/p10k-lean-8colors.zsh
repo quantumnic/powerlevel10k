@@ -94,6 +94,7 @@
     chezmoi_shell           # chezmoi shell (https://www.chezmoi.io/)
     # vpn_ip                # virtual private network indicator
     # cpu_usage              # CPU usage percentage
+    # ram_usage              # RAM usage percentage
     # load                  # CPU load
     # disk_usage            # disk usage
     # ram                   # free RAM
@@ -1236,6 +1237,11 @@
   # CPU usage thresholds (percentage). Segment color changes at these levels.
   # typeset -g POWERLEVEL9K_CPU_USAGE_HIGH_PCT=80
   # typeset -g POWERLEVEL9K_CPU_USAGE_MEDIUM_PCT=50
+
+  ###############[ ram_usage: RAM usage percentage ]###############
+  # RAM usage thresholds (percentage). Segment color changes at these levels.
+  # typeset -g POWERLEVEL9K_RAM_USAGE_HIGH_PCT=80
+  # typeset -g POWERLEVEL9K_RAM_USAGE_MEDIUM_PCT=50
 
   #############[ kubecontext: current kubernetes context (https://kubernetes.io/) ]#############
   # Show kubecontext only when the command you are typing invokes one of these tools.

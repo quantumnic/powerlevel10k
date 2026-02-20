@@ -2352,8 +2352,7 @@ _p9k_vpn_ip_render() {
 ################################################################
 # Segment to display laravel version
 prompt_laravel_version() {
-  # TODO: add a '-/' or '-.' here depending on whether artisan is a directory or a file.
-  _p9k_upglob artisan && return
+  _p9k_upglob artisan -. && return
   local dir=$_p9k__parent_dirs[$?]
   local app=$dir/vendor/laravel/framework/src/Illuminate/Foundation/Application.php
   [[ -r $app ]] || return
@@ -2892,6 +2891,83 @@ _p9k_prompt_cpu_usage_async() {
 }
 
 _p9k_prompt_cpu_usage_sync() {
+  eval $REPLY
+  _p9k_worker_reply $REPLY
+}
+
+################################################################
+# Segment to display RAM usage percentage
+prompt_ram_usage() {
+  local -i len=$#_p9k__prompt _p9k__has_upglob
+  _p9k_prompt_segment $0_HIGH    red    "$_p9k_color1" RAM_ICON 1 '$_p9k__ram_usage_high'    '$_p9k__ram_usage_pct%%'
+  _p9k_prompt_segment $0_MEDIUM  yellow "$_p9k_color1" RAM_ICON 1 '$_p9k__ram_usage_medium'  '$_p9k__ram_usage_pct%%'
+  _p9k_prompt_segment $0_LOW     green  "$_p9k_color1" RAM_ICON 1 '$_p9k__ram_usage_low'     '$_p9k__ram_usage_pct%%'
+  (( _p9k__has_upglob )) || typeset -g "_p9k__segment_val_${_p9k__prompt_side}[_p9k__segment_index]"=$_p9k__prompt[len+1,-1]
+}
+
+_p9k_prompt_ram_usage_init() {
+  typeset -g _p9k__ram_usage_pct=
+  typeset -g _p9k__ram_usage_low=
+  typeset -g _p9k__ram_usage_medium=
+  typeset -g _p9k__ram_usage_high=
+  _p9k__async_segments_compute+='_p9k_worker_invoke ram_usage _p9k_prompt_ram_usage_compute'
+}
+
+_p9k_prompt_ram_usage_compute() {
+  _p9k_worker_async _p9k_prompt_ram_usage_async _p9k_prompt_ram_usage_sync
+}
+
+_p9k_prompt_ram_usage_async() {
+  local -i pct
+  case $_p9k_os in
+    OSX|BSD)
+      (( $+commands[vm_stat] )) || return
+      local out && out="$(vm_stat 2>/dev/null)" || return
+      local -i page_size=16384
+      if [[ $out == (#b)*'page size of '([[:digit:]]##)* ]]; then
+        page_size=$match[1]
+      fi
+      local -i pages_active=0 pages_wired=0 pages_compressed=0 pages_free=0 pages_speculative=0
+      [[ $out == (#b)*'Pages active:'[[:space:]]##([[:digit:]]##)* ]] && pages_active=$match[1]
+      [[ $out == (#b)*'Pages wired down:'[[:space:]]##([[:digit:]]##)* ]] && pages_wired=$match[1]
+      [[ $out == (#b)*'Pages occupied by compressor:'[[:space:]]##([[:digit:]]##)* ]] && pages_compressed=$match[1]
+      [[ $out == (#b)*'Pages free:'[[:space:]]##([[:digit:]]##)* ]] && pages_free=$match[1]
+      [[ $out == (#b)*'Pages speculative:'[[:space:]]##([[:digit:]]##)* ]] && pages_speculative=$match[1]
+      local -i used=$(( (pages_active + pages_wired + pages_compressed) ))
+      local -i total=$(( used + pages_free + pages_speculative ))
+      (( total > 0 )) && (( pct = 100 * used / total ))
+    ;;
+    *)
+      [[ -r /proc/meminfo ]] || return
+      local out && out="$(</proc/meminfo)" || return
+      local -i mem_total=0 mem_available=0
+      [[ $out == (#b)*'MemTotal:'[[:space:]]##([[:digit:]]##)* ]] && mem_total=$match[1]
+      [[ $out == (#b)*'MemAvailable:'[[:space:]]##([[:digit:]]##)* ]] && mem_available=$match[1]
+      (( mem_total > 0 )) && (( pct = 100 * (mem_total - mem_available) / mem_total ))
+    ;;
+  esac
+
+  [[ $pct == $_p9k__ram_usage_pct ]] && return
+
+  _p9k__ram_usage_pct=$pct
+  _p9k__ram_usage_low=
+  _p9k__ram_usage_medium=
+  _p9k__ram_usage_high=
+  if (( pct >= ${_POWERLEVEL9K_RAM_USAGE_HIGH_PCT:-80} )); then
+    _p9k__ram_usage_high=1
+  elif (( pct >= ${_POWERLEVEL9K_RAM_USAGE_MEDIUM_PCT:-50} )); then
+    _p9k__ram_usage_medium=1
+  else
+    _p9k__ram_usage_low=1
+  fi
+  _p9k_print_params       \
+    _p9k__ram_usage_pct    \
+    _p9k__ram_usage_low    \
+    _p9k__ram_usage_medium \
+    _p9k__ram_usage_high
+}
+
+_p9k_prompt_ram_usage_sync() {
   eval $REPLY
   _p9k_worker_reply $REPLY
 }
@@ -7852,6 +7928,8 @@ _p9k_init_params() {
   _p9k_declare -F POWERLEVEL9K_LOAD_CRITICAL_PCT 70
   _p9k_declare -i POWERLEVEL9K_CPU_USAGE_HIGH_PCT 80
   _p9k_declare -i POWERLEVEL9K_CPU_USAGE_MEDIUM_PCT 50
+  _p9k_declare -i POWERLEVEL9K_RAM_USAGE_HIGH_PCT 80
+  _p9k_declare -i POWERLEVEL9K_RAM_USAGE_MEDIUM_PCT 50
   _p9k_declare -b POWERLEVEL9K_NODE_VERSION_PROJECT_ONLY 0
   _p9k_declare -b POWERLEVEL9K_PHP_VERSION_PROJECT_ONLY 0
   _p9k_declare -b POWERLEVEL9K_DOTNET_VERSION_PROJECT_ONLY 1
