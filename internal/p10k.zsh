@@ -2191,13 +2191,22 @@ prompt_docker_context() {
   if [[ -z $ctx ]]; then
     # Also check DOCKER_HOST — set by tools like colima, docker-machine, etc.
     if [[ -n "${DOCKER_HOST:-}" ]]; then
-      ctx=${DOCKER_HOST##*/}
-      [[ -z $ctx ]] && ctx=${DOCKER_HOST}
+      # Extract meaningful context from DOCKER_HOST URLs:
+      #   tcp://host:port  → host
+      #   ssh://user@host  → host
+      #   unix:///path     → (skip, not a named context)
+      if [[ ${DOCKER_HOST} == unix://* ]]; then
+        ctx=
+      elif [[ ${DOCKER_HOST} == (#b)*'://'([^@]##'@')#([^:/]##)* ]]; then
+        ctx=$match[2]
+      else
+        ctx=${DOCKER_HOST}
+      fi
     else
       local cfg="${DOCKER_CONFIG:-$HOME/.docker}/config.json"
       if [[ -r $cfg ]]; then
         # Fast extraction without jq dependency — handles simple JSON layout
-        if [[ "$(< $cfg)" == (#b)*'"currentContext"'[[:space:]]#:[[:space:]]#'"'([^\"']##)'"'* ]]; then
+        if [[ "$(< $cfg)" == (#b)*'"currentContext"'[[:space:]]#:[[:space:]]#'"'([^\"]##)'"'* ]]; then
           ctx=$match[1]
         fi
       fi
