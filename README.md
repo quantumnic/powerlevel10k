@@ -1560,6 +1560,7 @@ Powerlevel10k are released. This may change in the future but not soon.
 - [Horrific mess when resizing terminal window](#horrific-mess-when-resizing-terminal-window)
 - [Icons cut off in Konsole](#icons-cut-off-in-konsole)
 - [Arch Linux logo has a dot in the bottom right corner](#arch-linux-logo-has-a-dot-in-the-bottom-right-corner)
+- [AI coding agents (Cursor, Copilot, Windsurf) hang](#ai-coding-agents-cursor-copilot-windsurf-hang-or-cant-detect-command-completion)
 - [Incorrect git status in prompt](#incorrect-git-status-in-prompt)
 
 ### `[oh-my-zsh] theme 'powerlevel10k/powerlevel10k' not found`
@@ -2110,6 +2111,30 @@ Some fonts have this incorrect dotted icon in bold typeface. There are two ways 
 ```zsh
 typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION='${P9K_CONTENT}'  # not bold
 ```
+
+### AI coding agents (Cursor, Copilot, Windsurf) hang or can't detect command completion
+
+AI coding agents that run shell commands in terminal sessions (such as Cursor Agent, GitHub Copilot,
+and Windsurf) may hang indefinitely because Powerlevel10k's instant prompt interferes with their
+command completion detection.
+
+**Solution:** Disable Powerlevel10k (or at least instant prompt) when running inside an AI agent
+terminal session. Add this to your `~/.zshrc` *before* the instant prompt block:
+
+```zsh
+# Skip Powerlevel10k in AI agent terminal sessions
+if [[ -n "$VSCODE_INJECTION" || "$PAGER" == "head -n 10000 | cat" ]]; then
+  # Optionally fall back to a simpler theme:
+  # ZSH_THEME="robbyrussell"
+  return
+fi
+```
+
+Alternatively, to keep Powerlevel10k but only disable instant prompt, wrap the instant prompt
+`source` block in the same condition check.
+
+See [#2865](https://github.com/romkatv/powerlevel10k/issues/2865) for more details and
+community-contributed solutions.
 
 ### Incorrect git status in prompt
 
