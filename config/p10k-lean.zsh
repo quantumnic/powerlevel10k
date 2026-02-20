@@ -1235,7 +1235,7 @@
   ##########[ docker_context: active docker context (https://docs.docker.com/engine/context/) ]##########
   # Show docker_context only when the command you are typing invokes docker.
   # Tip: Remove the next line to always show docker_context.
-  typeset -g POWERLEVEL9K_DOCKER_CONTEXT_SHOW_ON_COMMAND='docker|docker-compose'
+  typeset -g POWERLEVEL9K_DOCKER_CONTEXT_SHOW_ON_COMMAND='docker|docker-compose|podman|nerdctl'
 
   ###############[ cpu_usage: CPU usage percentage ]###############
   # CPU usage thresholds (percentage). Segment color changes at these levels.
