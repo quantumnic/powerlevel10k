@@ -4,6 +4,8 @@ All notable changes to this community fork of Powerlevel10k.
 
 ## [Unreleased]
 
+## [v1.24.3] - 2026-02-21
+
 ### Fixed
 - **time**: Force `LC_TIME=C` in realtime time segment to prevent localized AM/PM strings (e.g., 午前/午後 in Japanese) (#2871)
 - **date**: Force `LC_TIME=C` in date segment to prevent localized day/month names, consistent with time segment fix (#2871)
