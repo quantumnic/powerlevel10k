@@ -2,6 +2,15 @@
 
 All notable changes to this community fork of Powerlevel10k.
 
+## [v1.24.7] - 2026-02-22
+
+### Fixed
+- **todo**: Add 5-second timeout to `todo.sh` command to prevent prompt hangs on network-backed storage
+
+### Added
+- **tests**: Add unit tests for SHOW_ON_COMMAND menu-select skip logic (#2912)
+- **tests**: Add unit tests for todo.sh output parsing and timeout handling
+
 ## [v1.24.6] - 2026-02-22
 
 ### Fixed
