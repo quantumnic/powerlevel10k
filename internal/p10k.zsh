@@ -7420,6 +7420,25 @@ _p9k_precmd_impl() {
     else
       unset P9K_COMMAND_DURATION_SECONDS
     fi
+
+    # Format duration for transient prompt (#2913)
+    if (( _POWERLEVEL9K_TRANSIENT_PROMPT_SHOW_EXECUTION_TIME )) && 
+       (( ${+P9K_COMMAND_DURATION_SECONDS} )) &&
+       (( P9K_COMMAND_DURATION_SECONDS >= _POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
+      local -i d=$((P9K_COMMAND_DURATION_SECONDS + 0.5))
+      if (( d < 60 )); then
+        typeset -g _p9k__transient_duration="${d}s"
+      elif (( d < 3600 )); then
+        typeset -g _p9k__transient_duration="$((d / 60))m $((d % 60))s"
+      elif (( d < 86400 )); then
+        typeset -g _p9k__transient_duration="$((d / 3600))h $((d / 60 % 60))m $((d % 60))s"
+      else
+        typeset -g _p9k__transient_duration="$((d / 86400))d $((d / 3600 % 24))h $((d / 60 % 60))m"
+      fi
+    else
+      typeset -g _p9k__transient_duration=
+    fi
+
     _p9k_save_status
 
     if [[ $_p9k__preexec_cmd == [[:space:]]#(clear([[:space:]]##-(|x)(|T[a-zA-Z0-9-_\'\"]#))#|reset)[[:space:]]# &&
@@ -7810,6 +7829,7 @@ _p9k_init_params() {
   # Enhanced transient prompt options (issue #9)
   _p9k_declare -b POWERLEVEL9K_TRANSIENT_PROMPT_SHOW_TIME 0
   _p9k_declare -b POWERLEVEL9K_TRANSIENT_PROMPT_SHOW_STATUS 0
+  _p9k_declare -b POWERLEVEL9K_TRANSIENT_PROMPT_SHOW_EXECUTION_TIME 0
 
   # Show error code only once (issue #11)
   _p9k_declare -b POWERLEVEL9K_STATUS_ERROR_SHOW_ONCE 0
@@ -8994,6 +9014,12 @@ function _p9k_init_cacheable() {
     # Enhanced transient prompt: show time prefix (issue #9)
     if (( _POWERLEVEL9K_TRANSIENT_PROMPT_SHOW_TIME )); then
       _p9k_transient_prompt+='%F{244}%D{%H:%M:%S}%f '
+    fi
+
+    # Enhanced transient prompt: show command execution time (issue #2913)
+    if (( _POWERLEVEL9K_TRANSIENT_PROMPT_SHOW_EXECUTION_TIME )); then
+      # _p9k__transient_duration is computed by _p9k_format_transient_duration in precmd.
+      _p9k_transient_prompt+='${_p9k__transient_duration:+%F{244}⏱ ${_p9k__transient_duration}%f }'
     fi
 
     # Enhanced transient prompt: show exit status (issue #9)
