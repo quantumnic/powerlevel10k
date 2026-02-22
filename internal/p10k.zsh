@@ -3839,8 +3839,10 @@ prompt_date() {
 }
 
 instant_prompt_date() {
+  # Force LC_TIME=C during stash expansion to avoid localized day/month names in instant prompt.
+  # Mirrors the fix in instant_prompt_time for issue #2871.
   _p9k_escape $_POWERLEVEL9K_DATE_FORMAT
-  local stash='${${__p9k_instant_prompt_date::=${(%)${__p9k_instant_prompt_date_format::='$_p9k__ret'}}}+}'
+  local stash='${${__p9k_instant_prompt_date::=${${${__p9k_instant_prompt_lc_time_save_date::=$LC_TIME}+}${${LC_TIME::=C}+}${(%)${__p9k_instant_prompt_date_format::='$_p9k__ret'}}${${LC_TIME::=$__p9k_instant_prompt_lc_time_save_date}+}}}+}'
   _p9k_escape $_POWERLEVEL9K_DATE_FORMAT
   _p9k_prompt_segment prompt_date "$_p9k_color2" "$_p9k_color1" "DATE_ICON" 1 '' $stash$_p9k__ret
 }

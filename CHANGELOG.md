@@ -4,8 +4,12 @@ All notable changes to this community fork of Powerlevel10k.
 
 ## [v1.24.8] - 2026-02-23
 
+### Fixed
+- **instant_prompt_date**: Force `LC_TIME=C` during instant prompt date stash expansion to prevent localized day/month names (consistent with time segment fix for #2871)
+
 ### Added
 - **tests**: Add unit tests for disk_usage segment (df parsing, threshold logic, ONLY_WARNING mode)
+- **tests**: Add unit tests for instant_prompt_date locale handling
 
 ## [v1.24.7] - 2026-02-22
 
