@@ -3788,11 +3788,11 @@ prompt_time() {
 }
 
 instant_prompt_time() {
-  # Note: instant prompt renders via stash expansion at display time, so we cannot
-  # easily force LC_TIME=C here. The instant prompt may show localized AM/PM briefly
-  # until the full prompt replaces it. See issue #2871.
+  # Force LC_TIME=C during stash expansion to avoid localized AM/PM in instant prompt.
+  # The stash is evaluated at display time via ${(%)...}, so we wrap it to temporarily
+  # override the locale. See issue #2871.
   _p9k_escape $_POWERLEVEL9K_TIME_FORMAT
-  local stash='${${__p9k_instant_prompt_time::=${(%)${__p9k_instant_prompt_time_format::='$_p9k__ret'}}}+}'
+  local stash='${${__p9k_instant_prompt_time::=${${${__p9k_instant_prompt_lc_time_save::=$LC_TIME}+}${${LC_TIME::=C}+}${(%)${__p9k_instant_prompt_time_format::='$_p9k__ret'}}${${LC_TIME::=$__p9k_instant_prompt_lc_time_save}+}}}+}'
   _p9k_escape $_POWERLEVEL9K_TIME_FORMAT
   _p9k_prompt_segment prompt_time "$_p9k_color2" "$_p9k_color1" "TIME_ICON" 1 '' $stash$_p9k__ret
 }

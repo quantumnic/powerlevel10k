@@ -7,7 +7,12 @@ All notable changes to this community fork of Powerlevel10k.
 ### Added
 - **transient_prompt**: Add `POWERLEVEL9K_TRANSIENT_PROMPT_SHOW_EXECUTION_TIME` option to display command execution time in transient prompt (#2913)
 - **tests**: Add unit tests for haskell_stack resolver parsing (#2890), UTF-8 pattern matching (#2887), IP interface regex (#2900)
+- **tests**: Add unit tests for instant prompt locale handling (#2871)
 - **tests**: Add `test/run_all.zsh` test runner
+
+### Fixed
+- **instant_prompt**: Force `LC_TIME=C` during instant prompt time stash expansion to prevent brief flash of localized AM/PM strings (#2871)
+- **wizard**: Add `cat` fallback for `cp` in configuration wizard to handle restrictive filesystem permissions (e.g., sticky-bit /tmp) (#2896)
 
 ## [v1.24.4] - 2026-02-22
 
