@@ -2,6 +2,11 @@
 
 All notable changes to this community fork of Powerlevel10k.
 
+## [v1.24.8] - 2026-02-23
+
+### Added
+- **tests**: Add unit tests for disk_usage segment (df parsing, threshold logic, ONLY_WARNING mode)
+
 ## [v1.24.7] - 2026-02-22
 
 ### Fixed
