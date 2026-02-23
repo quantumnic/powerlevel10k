@@ -2,6 +2,12 @@
 
 All notable changes to this community fork of Powerlevel10k.
 
+## [v1.24.9] - 2026-02-23
+
+### Added
+- **terraform**: Full OpenTofu (`tofu`) support — segment activates for `tofu` when `terraform` is not installed, version parsing handles `OpenTofu v...` output (#2919)
+- **tests**: Add `test_terraform_tofu.zsh` with 9 tests for tofu fallback logic and version parsing
+
 ## [v1.24.8] - 2026-02-23
 
 ### Fixed
