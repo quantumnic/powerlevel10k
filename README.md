@@ -11,7 +11,7 @@ Powerlevel10k is a theme for Zsh. It emphasizes [speed](#uncompromising-performa
 [flexibility](#extremely-customizable) and [out-of-the-box experience](#configuration-wizard).
 
 ![Powerlevel10k](
-https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/prompt-styles-high-contrast.png)
+https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/prompt-styles-high-contrast.png)
 
 - [Getting started](#getting-started)
 - [Features](#features)
@@ -22,6 +22,30 @@ https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/prompt-styl
 - [License](#license)
 - [FAQ](#faq)
 - [Troubleshooting](#troubleshooting)
+
+## Migrating from quantumnic/powerlevel10k
+
+Already using the original quantumnic/powerlevel10k? Migration is easy — your `~/.p10k.zsh`
+configuration works as-is, no changes needed.
+
+**Automatic (recommended):**
+
+```zsh
+zsh <(curl -fsSL https://raw.githubusercontent.com/quantumnic/powerlevel10k/master/migrate.zsh)
+```
+
+**Manual:** Update the git remote in your p10k directory:
+
+```zsh
+# Find your installation (common locations shown)
+cd ~/powerlevel10k  # or ${ZSH_CUSTOM}/themes/powerlevel10k for Oh My Zsh
+git remote set-url origin https://github.com/quantumnic/powerlevel10k.git
+git pull
+```
+
+For plugin managers (Zinit, Zim, Antidote, etc.), replace `quantumnic/powerlevel10k` with
+`quantumnic/powerlevel10k` in your `~/.zshrc` (or `~/.zimrc`, `~/.zsh_plugins.txt`) and
+reinstall/update.
 
 ## Getting started
 
@@ -53,7 +77,7 @@ Type `p10k configure` to access the builtin configuration wizard right from your
   <summary>Screen recording</summary>
 
   ![Powerlevel10k Configuration Wizard](
-    https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/configuration-wizard.gif)
+    https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/configuration-wizard.gif)
 </details>
 
 All styles except [Pure](#pure-compatibility) are functionally equivalent. They display the same
@@ -97,7 +121,7 @@ matter what you do!
   <summary>Screen recording</summary>
 
   ![Powerlevel10k Performance](
-    https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/performance.gif)
+    https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/performance.gif)
 </details>
 
 Note how the effect of every command is instantly reflected by the very next prompt.
@@ -124,7 +148,7 @@ configuration parameters.
   <summary>Screen recording</summary>
 
   ![Powerlevel10k Compatibility with 9k](
-    https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/9k-compatibility.gif)
+    https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/9k-compatibility.gif)
 </details>
 
 [Migration](#installation) from Powerlevel9k to Powerlevel10k is a straightforward process. All
@@ -151,7 +175,7 @@ Powerlevel10k can produce the same prompt as [Pure](https://github.com/sindresor
   <summary>Screen recording</summary>
 
   ![Powerlevel10k Pure Style](
-    https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/pure-style.gif)
+    https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/pure-style.gif)
 </details>
 
 You can still use Powerlevel10k features such as [transient prompt](#transient-prompt) or
@@ -175,7 +199,7 @@ may have noticed that it takes some time for Zsh to start.
   <summary>Screen recording</summary>
 
   ![Powerlevel10k No Instant Prompt](
-    https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/no-instant-prompt.gif)
+    https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/no-instant-prompt.gif)
 </details>
 
 Powerlevel10k can remove Zsh startup lag **even if it's not caused by a theme**.
@@ -184,7 +208,7 @@ Powerlevel10k can remove Zsh startup lag **even if it's not caused by a theme**.
   <summary>Screen recording</summary>
 
   ![Powerlevel10k Instant Prompt](
-    https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/instant-prompt.gif)
+    https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/instant-prompt.gif)
 </details>
 
 This feature is called *Instant Prompt*. You need to explicitly enable it through `p10k configure`
@@ -213,7 +237,7 @@ the command you are currently typing.
   <summary>Screen recording</summary>
 
   ![Powerlevel10k Show On Command](
-    https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/show-on-command.gif)
+    https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/show-on-command.gif)
 </details>
 
 Configs created by `p10k configure` enable show on command for several prompt segments by default.
@@ -237,7 +261,7 @@ prompt when accepting a command line.
   <summary>Screen recording</summary>
 
   ![Powerlevel10k Transient Prompt](
-    https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/transient-prompt.gif)
+    https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/transient-prompt.gif)
 </details>
 
 Transient prompt makes it much easier to copy-paste series of commands from the terminal scrollback.
@@ -256,7 +280,7 @@ when horizontal space gets scarce.
   <summary>Screen recording</summary>
 
   ![Powerlevel10k Directory Truncation](
-    https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/directory-truncation.gif)
+    https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/directory-truncation.gif)
 </details>
 
 When the full directory doesn't fit, the leftmost segment gets truncated to its shortest unique
@@ -284,7 +308,7 @@ Powerlevel10k can be configured to look like any other Zsh theme out there.
   <summary>Screen recording</summary>
 
   ![Powerlevel10k Other Theme Emulation](
-    https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/other-theme-emulation.gif)
+    https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/other-theme-emulation.gif)
 </details>
 
 [Pure](#pure-compatibility), [Powerlevel9k](#powerlevel9k-compatibility) and [robbyrussell](
@@ -296,12 +320,12 @@ goal and then edit `~/.p10k.zsh`.
 The full range of Powerlevel10k appearance spans from spartan:
 
 ![Powerlevel10k Spartan Style](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/spartan-style.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/spartan-style.png)
 
 To ~~ridiculous~~ extravagant:
 
 ![Powerlevel10k Extravagant Style](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/extravagant-style.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/extravagant-style.png)
 
 ### Batteries included
 
@@ -394,7 +418,7 @@ public API for defining segments that are as fast and as flexible as built-in on
   <summary>Screen recording</summary>
 
   ![Powerlevel10k Custom Segment](
-    https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/custom-segment.gif)
+    https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/custom-segment.gif)
 </details>
 
 On Linux you can fetch current CPU temperature by reading `/sys/class/thermal/thermal_zone0/temp`.
@@ -435,7 +459,7 @@ Powerlevel10k.
 ### Manual
 
 ```zsh
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+git clone --depth=1 https://github.com/quantumnic/powerlevel10k.git ~/powerlevel10k
 echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 ```
 
@@ -443,7 +467,7 @@ Users in China can use the official mirror on gitee.com for faster download.<br>
 中国用户可以使用 gitee.com 上的官方镜像加速下载.
 
 ```zsh
-git clone --depth=1 https://gitee.com/romkatv/powerlevel10k.git ~/powerlevel10k
+git clone --depth=1 https://gitee.com/quantumnic/powerlevel10k.git ~/powerlevel10k
 echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 ```
 
@@ -455,13 +479,13 @@ make sure to disable the current theme in your plugin manager. See
 
 1. Clone the repository:
     ```zsh
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+    git clone --depth=1 https://github.com/quantumnic/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
     ```
     Users in China can use the official mirror on gitee.com for faster download.<br>
     中国用户可以使用 gitee.com 上的官方镜像加速下载.
 
     ```zsh
-    git clone --depth=1 https://gitee.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+    git clone --depth=1 https://gitee.com/quantumnic/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
     ```
 2. Open `~/.zshrc`, find the line that sets `ZSH_THEME`, and change its value to `"powerlevel10k/powerlevel10k"`.
 
@@ -471,53 +495,53 @@ Add `zstyle :prezto:module:prompt theme powerlevel10k` to `~/.zpreztorc`.
 
 ### Zim
 
-Add `zmodule romkatv/powerlevel10k --use degit` to `~/.zimrc` and run `zimfw install`.
+Add `zmodule quantumnic/powerlevel10k --use degit` to `~/.zimrc` and run `zimfw install`.
 
 ### Antibody
 
-Add `antibody bundle romkatv/powerlevel10k` to `~/.zshrc`.
+Add `antibody bundle quantumnic/powerlevel10k` to `~/.zshrc`.
 
 ### Antidote
 
-Add `romkatv/powerlevel10k` to `~/.zsh_plugins.txt`.
+Add `quantumnic/powerlevel10k` to `~/.zsh_plugins.txt`.
 
 ### Antigen
 
-Add `antigen theme romkatv/powerlevel10k` to `~/.zshrc`. Make sure you have `antigen apply`
+Add `antigen theme quantumnic/powerlevel10k` to `~/.zshrc`. Make sure you have `antigen apply`
 somewhere after it.
 
 ### Zplug
 
-Add `zplug romkatv/powerlevel10k, as:theme, depth:1` to `~/.zshrc`.
+Add `zplug quantumnic/powerlevel10k, as:theme, depth:1` to `~/.zshrc`.
 
 ### Zgen
 
-Add `zgen load romkatv/powerlevel10k powerlevel10k` to `~/.zshrc`.
+Add `zgen load quantumnic/powerlevel10k powerlevel10k` to `~/.zshrc`.
 
 ### Zplugin
 
-Add `zplugin ice depth=1; zplugin light romkatv/powerlevel10k` to `~/.zshrc`.
+Add `zplugin ice depth=1; zplugin light quantumnic/powerlevel10k` to `~/.zshrc`.
 
 The use of `depth=1` ice is optional. Other types of ice are neither recommended nor officially
 supported by Powerlevel10k.
 
 ### Zinit
 
-Add `zinit ice depth=1; zinit light romkatv/powerlevel10k` to `~/.zshrc`.
+Add `zinit ice depth=1; zinit light quantumnic/powerlevel10k` to `~/.zshrc`.
 
 The use of `depth=1` ice is optional. Other types of ice are neither recommended nor officially
 supported by Powerlevel10k.
 
 ### Zi
 
-Add `zi ice depth=1; zi light romkatv/powerlevel10k` to `~/.zshrc`.
+Add `zi ice depth=1; zi light quantumnic/powerlevel10k` to `~/.zshrc`.
 
 The use of `depth=1` ice is optional. Other types of ice are neither recommended nor officially
 supported by Powerlevel10k.
 
 ### Zap
 
-Add `plug "romkatv/powerlevel10k"` to `~/.zshrc`.
+Add `plug "quantumnic/powerlevel10k"` to `~/.zshrc`.
 
 ### Homebrew
 
@@ -634,13 +658,13 @@ If you are using a different terminal, proceed with manual font installation. �
 
 1. Download these four ttf files:
    - [MesloLGS NF Regular.ttf](
-       https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf)
+       https://github.com/quantumnic/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf)
    - [MesloLGS NF Bold.ttf](
-       https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf)
+       https://github.com/quantumnic/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf)
    - [MesloLGS NF Italic.ttf](
-       https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf)
+       https://github.com/quantumnic/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf)
    - [MesloLGS NF Bold Italic.ttf](
-       https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf)
+       https://github.com/quantumnic/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf)
 1. Double-click on each file and click "Install". This will make `MesloLGS NF` font available to all
    applications on your system.
 1. Configure your terminal to use this font:
@@ -655,9 +679,9 @@ If you are using a different terminal, proceed with manual font installation. �
      *Code → Preferences → Settings* (Mac), enter `terminal.integrated.fontFamily` in the search box at
      the top of *Settings* tab and set the value below to `MesloLGS NF`.
      Consult [this screenshot](
-       https://raw.githubusercontent.com/romkatv/powerlevel10k-media/389133fb8c9a2347929a23702ce3039aacc46c3d/visual-studio-code-font-settings.jpg)
+       https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/389133fb8c9a2347929a23702ce3039aacc46c3d/visual-studio-code-font-settings.jpg)
      to see how it should look like or see [this issue](
-       https://github.com/romkatv/powerlevel10k/issues/671) for extra information.
+       https://github.com/quantumnic/powerlevel10k/issues/671) for extra information.
 
      Note that software installed via [Snap](https://en.wikipedia.org/wiki/Snap_\(software\)) is
      unable to use system fonts. If you've install Visual Studio Code via Snap, remove it by running
@@ -758,25 +782,25 @@ If you are using a different terminal, proceed with manual font installation. �
      ```css
      @font-face {
       font-family: "MesloLGS NF";
-      src: url("https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/MesloLGS%20NF%20Regular.ttf");
+      src: url("https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/MesloLGS%20NF%20Regular.ttf");
       font-weight: normal;
       font-style: normal;
      }
      @font-face {
          font-family: "MesloLGS NF";
-         src: url("https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/MesloLGS%20NF%20Bold.ttf");
+         src: url("https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/MesloLGS%20NF%20Bold.ttf");
          font-weight: bold;
          font-style: normal;
      }
      @font-face {
          font-family: "MesloLGS NF";
-         src: url("https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/MesloLGS%20NF%20Italic.ttf");
+         src: url("https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/MesloLGS%20NF%20Italic.ttf");
          font-weight: normal;
          font-style: italic;
      }
      @font-face {
          font-family: "MesloLGS NF";
-         src: url("https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/MesloLGS%20NF%20Bold%20Italic.ttf");
+         src: url("https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/MesloLGS%20NF%20Bold%20Italic.ttf");
          font-weight: bold;
          font-style: italic;
      }
@@ -807,7 +831,7 @@ the theme. Once you exit Zsh, the container is deleted.
 ```zsh
 docker run -e TERM -e COLORTERM -e LC_ALL=C.UTF-8 -it --rm alpine sh -uec '
   apk add git zsh nano vim
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+  git clone --depth=1 https://github.com/quantumnic/powerlevel10k.git ~/powerlevel10k
   echo "source ~/powerlevel10k/powerlevel10k.zsh-theme" >>~/.zshrc
   cd ~/powerlevel10k
   exec zsh'
@@ -821,7 +845,7 @@ running the Docker command to get access to all prompt styles.
 ## License
 
 Powerlevel10k is released under the
-[MIT license](https://github.com/romkatv/powerlevel10k/blob/master/LICENSE).
+[MIT license](https://github.com/quantumnic/powerlevel10k/blob/master/LICENSE).
 
 ## FAQ
 
@@ -919,13 +943,13 @@ The command to update Powerlevel10k depends on how it was installed.
    | [Oh My Zsh](#oh-my-zsh)       | `rm -rf -- "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"` |
    | [Prezto](#prezto)             | n/a                                                              |
    | [Zim](#zim)                   | `zimfw uninstall`                                                |
-   | [Antigen](#antigen)           | `antigen purge romkatv/powerlevel10k`                            |
-   | [Antidote](#antidote)         | `antidote purge romkatv/powerlevel10k`                           |
+   | [Antigen](#antigen)           | `antigen purge quantumnic/powerlevel10k`                            |
+   | [Antidote](#antidote)         | `antidote purge quantumnic/powerlevel10k`                           |
    | [Zplug](#zplug)               | `zplug clean`                                                    |
    | [Zgen](#zgen)                 | `zgen reset`                                                     |
-   | [Zplugin](#zplugin)           | `zplugin delete romkatv/powerlevel10k`                           |
-   | [Zinit](#zinit)               | `zinit delete romkatv/powerlevel10k`                             |
-   | [Zi](#zi)                     | `zi delete romkatv/powerlevel10k`                                |
+   | [Zplugin](#zplugin)           | `zplugin delete quantumnic/powerlevel10k`                           |
+   | [Zinit](#zinit)               | `zinit delete quantumnic/powerlevel10k`                             |
+   | [Zi](#zi)                     | `zi delete quantumnic/powerlevel10k`                                |
    | [Zap](#zap)                   | `zsh -ic 'zap clean'`                                            |
    | [Homebrew](#homebrew)         | `brew uninstall powerlevel10k`                                   |
    | [Arch Linux](#arch-linux)     | `yay -R --noconfirm zsh-theme-powerlevel10k-git`                 |
@@ -946,7 +970,7 @@ The command to update Powerlevel10k depends on how it was installed.
    `target_uname` with the output of the previous command:
    ```sh
    target_uname="replace this with the output of the previous command"
-   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+   git clone --depth=1 https://github.com/quantumnic/powerlevel10k.git ~/powerlevel10k
    GITSTATUS_CACHE_DIR="$HOME"/powerlevel10k/gitstatus/usrbin ~/powerlevel10k/gitstatus/install -f -s "${target_uname% *}" -m "${target_uname#* }"
    ```
 3. Copy `~/powerlevel10k` from the machine connected to the Internet to the one without Internet
@@ -966,7 +990,7 @@ To update, remove `~/powerlevel10k` on both machines and repeat steps 1-3.
 ### Where can I ask for help and report bugs?
 
 The best way to ask for help and to report bugs is to [open an issue](
-  https://github.com/romkatv/powerlevel10k/issues).
+  https://github.com/quantumnic/powerlevel10k/issues).
 
 [Gitter](
   https://gitter.im/powerlevel10k/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
@@ -983,7 +1007,7 @@ Powerlevel10k defines prompt and nothing else. It sets [prompt-related options](
   http://zsh.sourceforge.net/Doc/Release/Options.html#Prompting), and parameters `PS1` and `RPS1`.
 
 ![Prompt Highlight](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/prompt-highlight.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/prompt-highlight.png)
 
 Everything within the highlighted areas on the screenshot is produced by Powerlevel10k.
 Powerlevel10k has no control over the terminal content or colors outside these areas.
@@ -1008,7 +1032,7 @@ Powerlevel10k does not affect:
 1. Run this command:
 ```zsh
 # Add powerlevel10k to the list of Oh My Zsh themes.
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+git clone --depth=1 https://github.com/quantumnic/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
 # Replace ZSH_THEME="powerlevel9k/powerlevel9k" with ZSH_THEME="powerlevel10k/powerlevel10k".
 sed -i.bak 's/powerlevel9k/powerlevel10k/g' ~/.zshrc
 # Restart Zsh.
@@ -1381,7 +1405,7 @@ process terminates or runs `exec(3)`.
 
 No, Powerlevel10k is always fast, with any configuration you throw at it. If you have noticeable
 prompt latency when using Powerlevel10k, please
-[open an issue](https://github.com/romkatv/powerlevel10k/issues).
+[open an issue](https://github.com/quantumnic/powerlevel10k/issues).
 
 ### Is Powerlevel10k fast to load?
 
@@ -1434,7 +1458,7 @@ Almost. There are a few differences.
   - There are dozens more bugs in Powerlevel9k that don't exist in Powerlevel10k.
 
 If you notice any other changes in prompt appearance when switching from Powerlevel9k to
-Powerlevel10k, please [open an issue](https://github.com/romkatv/powerlevel10k/issues).
+Powerlevel10k, please [open an issue](https://github.com/quantumnic/powerlevel10k/issues).
 
 ### What is the best prompt style in the configuration wizard?
 
@@ -1480,7 +1504,7 @@ prompt style.
 ### How to make Powerlevel10k look like robbyrussell Oh My Zsh theme?
 
 Use [this config](
-  https://github.com/romkatv/powerlevel10k/blob/master/config/p10k-robbyrussell.zsh).
+  https://github.com/quantumnic/powerlevel10k/blob/master/config/p10k-robbyrussell.zsh).
 
 You can either download it, save as `~/.p10k.zsh` and `source ~/.p10k.zsh` from `~/.zshrc`, or
 source `p10k-robbyrussell.zsh` directly from your cloned `powerlevel10k` repository.
@@ -1506,7 +1530,7 @@ All screenshots and animated gifs were recorded in GNOME Terminal with
 custom background color (`#171A1B` instead of `#2E3436` -- twice as dark).
 
 ![GNOME Terminal Color Settings](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/gnome-terminal-colors.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/gnome-terminal-colors.png)
 
 Syntax highlighting, where present, was provided by [zsh-syntax-highlighting](
   https://github.com/zsh-users/zsh-syntax-highlighting).
@@ -1518,7 +1542,7 @@ individuals. Its origin is *Bitstream Vera Sans Mono*, which has given birth to 
 turn has spawned *Meslo*. Finally, extra glyphs have been added to *Meslo* with scripts forked
 from Nerd Fonts. The final font is released under the terms of
 [Apache License](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/MesloLGS%20NF%20License.txt).
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/MesloLGS%20NF%20License.txt).
 
 MesloLGS NF font can be recreated with the following command (requires `git` and `docker`):
 
@@ -1580,7 +1604,7 @@ When opening a terminal, or starting zsh manually, you may encounter this error 
    - If `typeset -p P9K_VERSION` fails with the error `typeset: no such variable: P9K_VERSION`, run
      the following command:
      ```zsh
-     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+     git clone --depth=1 https://github.com/quantumnic/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
      ```
 2. Restart Zsh with `exec zsh`.
 
@@ -1605,7 +1629,7 @@ and run `p10k configure`.
 ### Sub-pixel imperfections around powerline symbols
 
 ![Powerline Prompt Imperfections](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/powerline-imperfections.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/powerline-imperfections.png)
 
 There are three imperfections on the screenshot. From left to right:
 
@@ -1620,7 +1644,7 @@ screen is made of monospace characters. A white powerline prompt segment is made
 background followed by U+E0B0 (a right-pointing triangle).
 
 ![Powerline Prompt Imperfections](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/powerline-anatomy.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/powerline-anatomy.png)
 
 If Powerlevel10k prompt has imperfections around powerline symbols, you'll see exactly the same
 imperfections with all powerline themes (Agnoster, Powerlevel9k, Powerline, etc.)
@@ -1649,7 +1673,7 @@ iTerm2 3.5+), or switch to angled or vertical separators via `p10k configure`.
 
 Type `echo '\u276F'`. If you get an error saying "zsh: character not in range", your locale
 doesn't support UTF-8. You need to fix it. If you are running Zsh over SSH, see
-[this](https://github.com/romkatv/powerlevel10k/issues/153#issuecomment-518347833). If you are
+[this](https://github.com/quantumnic/powerlevel10k/issues/153#issuecomment-518347833). If you are
 running Zsh locally, Google "set UTF-8 locale in *your OS*".
 
 ### Cursor is in the wrong place
@@ -1706,7 +1730,7 @@ culprits. Open an issue if you get stuck.
 
 This is usually caused by a terminal bug or misconfiguration that makes it print ambiguous-width
 characters as double-width instead of single width. For example,
-[this issue](https://github.com/romkatv/powerlevel10k/issues/165).
+[this issue](https://github.com/quantumnic/powerlevel10k/issues/165).
 
 #### If the prompt line is shorter than the frame and is mangled
 
@@ -1719,7 +1743,7 @@ characters as double-width instead of single width. For example,
 Note that this prompt is different from the original as it's missing a space after the check mark.
 
 This can be caused by a low-level bug in macOS. See
-[this issue](https://github.com/romkatv/powerlevel10k/issues/241).
+[this issue](https://github.com/quantumnic/powerlevel10k/issues/241).
 
 This can also happen if prompt contains glyphs designated as "wide" in the Unicode standard and your
 terminal incorrectly displays them as non-wide. Terminals suffering from this limitation include
@@ -1735,7 +1759,7 @@ remove all wide glyphs from prompt.
 ```
 
 This can be caused by misconfigured locale. See
-[this issue](https://github.com/romkatv/powerlevel10k/issues/251).
+[this issue](https://github.com/quantumnic/powerlevel10k/issues/251).
 
 ### Prompt wrapping around in a weird way
 
@@ -1818,7 +1842,7 @@ you set `ZLE_RPROMPT_INDENT=0`, your prompt will go to the edge of the terminal.
 works in every theme except Powerlevel9k.
 
 ![ZLE_RPROMPT_INDENT: Powerlevel10k vs Powerlevel9k](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/p9k-vs-p10k-zle-rprompt-indent.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/p9k-vs-p10k-zle-rprompt-indent.png)
 
 Powerlevel9k issue: [powerlevel9k#1292](https://github.com/Powerlevel9k/powerlevel9k/issues/1292).
 It's been fixed in the development branch of Powerlevel9k but the fix hasn't yet made it to
@@ -1839,7 +1863,7 @@ icons as in Powerlevel9k.
 Spacing around icons in Powerlevel9k is inconsistent.
 
 ![ZLE_RPROMPT_INDENT: Powerlevel10k vs Powerlevel9k](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/p9k-vs-p10k-icon-spacing.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/p9k-vs-p10k-icon-spacing.png)
 
 This inconsistency is a constant source of annoyance, so it was fixed in Powerlevel10k. You can add
 `POWERLEVEL9K_LEGACY_ICON_SPACING=true` to `~/.zshrc` to get the same spacing around icons as in
@@ -1883,7 +1907,7 @@ theme (so that you end up with no theme) and then installing Powerlevel10k manua
 2. Install Powerlevel10k manually.
 
 ```zsh
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+git clone --depth=1 https://github.com/quantumnic/powerlevel10k.git ~/powerlevel10k
 echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 ```
 
@@ -1921,13 +1945,13 @@ When you resize a terminal window horizontally back and forth a few times, you m
 picture.
 
 ![Powerlevel10k Resizing Mess](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/resizing-mess.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/resizing-mess.png)
 
 tl;dr: This issue arises when a terminal reflows Zsh prompt upon resizing. It isn't specific to
 Powerlevel10k. See [mitigation](#mitigation).
 
 *Note: This section [used to say](
-  https://github.com/romkatv/powerlevel10k/blob/dce00cdb5daaa8a519df234a7012ba3257b644d4/README.md#horrific-mess-when-resizing-terminal-window)
+  https://github.com/quantumnic/powerlevel10k/blob/dce00cdb5daaa8a519df234a7012ba3257b644d4/README.md#horrific-mess-when-resizing-terminal-window)
 that the problem is caused by a bug in Zsh. While it's true that it's possible to avoid the problem
 in many circumstances by modifying Zsh, it cannot be completely resolved this way. Thus it's unfair
 to pin the blame on Zsh.*
@@ -1943,17 +1967,17 @@ lines that no longer fit: *reflow* or *truncate*.
 Terminal content before shrinking:
 
 ![Terminal Content Before Shrinking](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/resize-original.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/resize-original.png)
 
 Terminal reflows text when shrinking:
 
 ![Terminal Reflows Text When Shrinking](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/resize-reflow.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/resize-reflow.png)
 
 Terminal truncates text when shrinking:
 
 ![Terminal Truncates Text When Shrinking](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/resize-truncate.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/resize-truncate.png)
 
 Reflowing strategy can change the height of terminal content. If such content happens to be between
 the start of the current prompt and the cursor, Zsh will print prompt on the wrong line. Truncation
@@ -1976,13 +2000,13 @@ When `PROMPT` gets expanded, it calls `pause` to let us observe the state of the
 the initial state:
 
 ![Terminal Resizing Bug 1](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/resize-bug-1.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/resize-bug-1.png)
 
 Zsh keeps track of the cursor position relative to the start of the current prompt. In this case it
 knows that the cursor is one line below. When we shrink the terminal window, it looks like this:
 
 ![Terminal Resizing Bug 2](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/resize-bug-2.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/resize-bug-2.png)
 
 At this point the terminal sends `SIGWINCH` to Zsh to notify it about changes in the terminal
 dimensions. Note that this signal is sent *after* the content of the terminal has been reflown.
@@ -1994,7 +2018,7 @@ no longer one line above the cursor. It's two lines above! Zsh ends up printing 
 too low.
 
 ![Terminal Resizing Bug 3](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/resize-bug-3.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/resize-bug-3.png)
 
 In this case we ended up with unwanted junk content because `VD` has *increased*. When you make
 terminal window wider, `VD` can also *decrease*, which would result in the new prompt being printed
@@ -2005,11 +2029,11 @@ Here are a few more examples where shrinking terminal window increased `VD`.
 - Simple one-line left prompt with right prompt. No `prompt_subst`. Note that the cursor is below
   the prompt line (hit *ESC-ENTER* to get it there).
   ![Zsh Prompt That Breaks on Terminal Shrinking 1](
-    https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/resize-breakable-1.png)
+    https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/resize-breakable-1.png)
 - Simple one-line left prompt. No `prompt_subst`, no right prompt. Here `VD` is bound to increase
   upon terminal shrinking due to the command line wrapping around.
   ![Zsh Prompt That Breaks on Terminal Shrinking 2](
-    https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/resize-breakable-2.png)
+    https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/resize-breakable-2.png)
 
 #### Zsh patch
 
@@ -2071,7 +2095,7 @@ When using Konsole with a non-monospace font, icons may be cut off on the right 
 for glyphs designated as "wide" in the Unicode standard.
 
 ![Icons cut off in Konsole](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/konsole-non-monospace-font.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/konsole-non-monospace-font.png)
 
 The last line on the screenshot shows a cut off Arch Linux logo.
 
@@ -2100,7 +2124,7 @@ typeset -g POWERLEVEL9K_LINUX_ARCH_ICON='Arch'  # plain "Arch" in place of a log
 ### Arch Linux logo has a dot in the bottom right corner
 
 ![Arch Linux Logo with a dot](
-  https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/arch-linux-logo-dot.png)
+  https://raw.githubusercontent.com/quantumnic/powerlevel10k-media/master/arch-linux-logo-dot.png)
 
 Some fonts have this incorrect dotted icon in bold typeface. There are two ways to fix this issue.
 
@@ -2133,7 +2157,7 @@ fi
 Alternatively, to keep Powerlevel10k but only disable instant prompt, wrap the instant prompt
 `source` block in the same condition check.
 
-See [#2865](https://github.com/romkatv/powerlevel10k/issues/2865) for more details and
+See [#2865](https://github.com/quantumnic/powerlevel10k/issues/2865) for more details and
 community-contributed solutions.
 
 ### Incorrect git status in prompt
