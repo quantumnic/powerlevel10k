@@ -75,6 +75,9 @@ for d in "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" \
 done
 
 # Zinit / Zplugin
+# Declare ZINIT as associative array if not already set, so the
+# ${ZINIT[PLUGINS_DIR]:-...} fallback works under nounset (set -u).
+(( ${+ZINIT} )) || typeset -A ZINIT
 for d in ~/.zinit/plugins/romkatv---powerlevel10k \
          ~/.local/share/zinit/plugins/romkatv---powerlevel10k \
          "${ZINIT[PLUGINS_DIR]:-/dev/null}/romkatv---powerlevel10k" \
