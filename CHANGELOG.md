@@ -2,6 +2,12 @@
 
 All notable changes to this community fork of Powerlevel10k.
 
+## [v1.24.12] - 2026-02-23
+
+### Added
+- **tests**: Add `test_status_show_once.zsh` with 6 tests for `POWERLEVEL9K_STATUS_ERROR_SHOW_ONCE` feature (#2873)
+- **tests**: Add `test_wizard_transient_samedir.zsh` with 6 tests for wizard transient prompt same-dir option (#2880)
+
 ## [v1.24.11] - 2026-02-23
 
 ### Added
