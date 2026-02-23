@@ -2,6 +2,14 @@
 
 All notable changes to this community fork of Powerlevel10k.
 
+## [v1.24.10] - 2026-02-23
+
+### Fixed
+- **wifi**: Add 5-second timeouts to all `networksetup` and `ipconfig` calls in the wifi SSID fallback path to prevent prompt hangs on macOS (MDM policies, network issues)
+
+### Added
+- **tests**: Add `test_wifi_timeout.zsh` with 5 tests for wifi segment timeout wrappers
+
 ## [v1.24.9] - 2026-02-23
 
 ### Added
