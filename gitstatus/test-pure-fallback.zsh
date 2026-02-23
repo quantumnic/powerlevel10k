@@ -310,9 +310,13 @@ else
 fi
 cd ..
 
+# Restart TEST_INSTANCE after Test 12 stopped it
+gitstatus_start TEST_INSTANCE
+
 # Test 14: Rebase action detection
 print "${YELLOW}Test 14: Rebase action detection${RESET}"
-mkdir rebase-repo && cd rebase-repo
+local rebase_dir="$TEST_ROOT/rebase-repo"
+mkdir -p "$rebase_dir" && cd "$rebase_dir"
 git init
 echo "Base content" > file.txt
 git add file.txt
@@ -322,50 +326,50 @@ echo "Feature content" > file.txt
 git add file.txt
 git commit -m "Feature commit"
 git checkout main
-echo "Main content" > file.txt  # Change same file to create conflict
-git add file.txt
-git commit -m "Main commit"
-# Try to force a conflict by making the changes more incompatible
 echo "Completely different content" > file.txt
 git add file.txt
-git commit --amend --no-edit
+git commit -m "Main commit"
 # Start rebase (should conflict)
-if git rebase feature >/dev/null 2>&1; then
+git rebase feature >/dev/null 2>&1
+local rebase_exit=$?
+if (( rebase_exit == 0 )); then
   print "${YELLOW}INFO${RESET} Rebase succeeded without conflict, skipping rebase action test"
   (( TOTAL += 2 ))
 else
-  gitstatus_query -d . TEST_INSTANCE
+  gitstatus_query -d "$rebase_dir" TEST_INSTANCE
   print_test_result "Rebase result" "ok-sync" "$VCS_STATUS_RESULT"
   print_test_result "Rebase action" "rebase" "$VCS_STATUS_ACTION"
 fi
-cd ..
+cd "$TEST_ROOT"
 
 # Test 15: Cherry-pick action detection  
 print "${YELLOW}Test 15: Cherry-pick action detection${RESET}"
-mkdir cherry-repo && cd cherry-repo
+local cherry_dir="$TEST_ROOT/cherry-repo"
+mkdir -p "$cherry_dir" && cd "$cherry_dir"
 git init
 echo "Base" > file.txt
 git add file.txt
 git commit -m "Base"
 git checkout -b feature
-echo "Feature change" > file.txt  # Modify same file to create conflict
+echo "Feature change" > file.txt
 git add file.txt
 git commit -m "Feature commit"
 git checkout main
-# Create a more substantial conflict
 echo "Completely different main content" > file.txt
 git add file.txt
 git commit -m "Main change"
 # Cherry-pick that should conflict
-if git cherry-pick feature >/dev/null 2>&1; then
+git cherry-pick feature >/dev/null 2>&1
+local cherry_exit=$?
+if (( cherry_exit == 0 )); then
   print "${YELLOW}INFO${RESET} Cherry-pick succeeded without conflict, skipping cherry-pick action test"
   (( TOTAL += 2 ))
 else
-  gitstatus_query -d . TEST_INSTANCE
+  gitstatus_query -d "$cherry_dir" TEST_INSTANCE
   print_test_result "Cherry-pick result" "ok-sync" "$VCS_STATUS_RESULT"
   print_test_result "Cherry-pick action" "cherry-pick" "$VCS_STATUS_ACTION"
 fi
-cd ..
+cd "$TEST_ROOT"
 
 # Clean up
 gitstatus_stop TEST_INSTANCE 2>/dev/null || true
