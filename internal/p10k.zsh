@@ -5365,16 +5365,17 @@ function prompt_terraform() {
 }
 
 _p9k_prompt_terraform_init() {
-  typeset -g "_p9k__segment_cond_${_p9k__prompt_side}[_p9k__segment_index]"='$commands[terraform]'
+  typeset -g "_p9k__segment_cond_${_p9k__prompt_side}[_p9k__segment_index]"='${commands[terraform]:-$commands[tofu]}'
 }
 
 function prompt_terraform_version() {
-  local v cfg terraform=${commands[terraform]}
+  local v cfg terraform=${commands[terraform]:-${commands[tofu]}}
+  [[ -n $terraform ]] || return
   _p9k_upglob .terraform-version -. || cfg=$_p9k__parent_dirs[$?]/.terraform-version
   if _p9k_cache_stat_get $0.$TFENV_TERRAFORM_VERSION $terraform $cfg; then
     v=$_p9k__cache_val[1]
   else
-    v=${${"$(terraform --version 2>/dev/null)"#Terraform v}%%$'\n'*} || v=
+    v=${${"$($terraform --version 2>/dev/null)"#(Terraform|OpenTofu) v}%%$'\n'*} || v=
     _p9k_cache_stat_set "$v"
   fi
   [[ -n $v ]] || return
@@ -5382,7 +5383,7 @@ function prompt_terraform_version() {
 }
 
 _p9k_prompt_terraform_version_init() {
-  typeset -g "_p9k__segment_cond_${_p9k__prompt_side}[_p9k__segment_index]"='$commands[terraform]'
+  typeset -g "_p9k__segment_cond_${_p9k__prompt_side}[_p9k__segment_index]"='${commands[terraform]:-$commands[tofu]}'
 }
 
 function prompt_proxy() {
