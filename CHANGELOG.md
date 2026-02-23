@@ -2,6 +2,15 @@
 
 All notable changes to this community fork of Powerlevel10k.
 
+## [v1.24.11] - 2026-02-23
+
+### Added
+- **gitstatus**: Pure-git backend (`gitstatus-git-backend.zsh`) — provides all `VCS_STATUS_*` variables using plain `git` commands, no gitstatusd compilation required. Covers branch, upstream, ahead/behind, push remote, actions, tags, stashes, staged/unstaged/untracked/conflicted counts, assume-unchanged, and skip-worktree.
+- **tests**: Add `test_git_backend.zsh` with 20 integration tests for the pure-git backend
+
+### Fixed
+- **issue-hygiene**: Removed duplicate comments on upstream issues
+
 ## [v1.24.10] - 2026-02-23
 
 ### Fixed
