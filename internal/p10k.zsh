@@ -5672,12 +5672,22 @@ _p9k_prompt_wifi_async() {
       # networksetup to retrieve the actual network name.
       if [[ $ssid == '<redacted>' || -z $ssid ]]; then
         local _wifi_iface
-        _wifi_iface="$(command networksetup -listallhardwareports 2>/dev/null |
-          command awk '/Wi-Fi|AirPort/{getline; print $NF}')"
+        # Use timeout to prevent hanging if networksetup blocks (e.g., MDM or network issues).
+        if (( $+commands[timeout] )); then
+          _wifi_iface="$(command timeout 5 networksetup -listallhardwareports 2>/dev/null |
+            command awk '/Wi-Fi|AirPort/{getline; print $NF}')"
+        else
+          _wifi_iface="$(command networksetup -listallhardwareports 2>/dev/null |
+            command awk '/Wi-Fi|AirPort/{getline; print $NF}')"
+        fi
         if [[ -n $_wifi_iface ]]; then
           # Use -getairportnetwork to get the *current* SSID, not just preferred networks
           local _fallback_out
-          _fallback_out="$(command networksetup -getairportnetwork "$_wifi_iface" 2>/dev/null)"
+          if (( $+commands[timeout] )); then
+            _fallback_out="$(command timeout 5 networksetup -getairportnetwork "$_wifi_iface" 2>/dev/null)"
+          else
+            _fallback_out="$(command networksetup -getairportnetwork "$_wifi_iface" 2>/dev/null)"
+          fi
           if [[ $_fallback_out == 'Current Wi-Fi Network: '* ]]; then
             local _fallback_ssid=${_fallback_out#Current Wi-Fi Network: }
             [[ -n $_fallback_ssid ]] && ssid=$_fallback_ssid
@@ -5686,10 +5696,18 @@ _p9k_prompt_wifi_async() {
           # try ipconfig getsummary + listpreferredwirelessnetworks (#2894)
           if [[ $ssid == '<redacted>' || -z $ssid ]]; then
             local _ipconfig_out
-            _ipconfig_out="$(command ipconfig getsummary "$_wifi_iface" 2>/dev/null)"
+            if (( $+commands[timeout] )); then
+              _ipconfig_out="$(command timeout 5 ipconfig getsummary "$_wifi_iface" 2>/dev/null)"
+            else
+              _ipconfig_out="$(command ipconfig getsummary "$_wifi_iface" 2>/dev/null)"
+            fi
             if [[ $_ipconfig_out != *'Active : FALSE'* ]]; then
               local _pref_out
-              _pref_out="$(command networksetup -listpreferredwirelessnetworks "$_wifi_iface" 2>/dev/null)"
+              if (( $+commands[timeout] )); then
+                _pref_out="$(command timeout 5 networksetup -listpreferredwirelessnetworks "$_wifi_iface" 2>/dev/null)"
+              else
+                _pref_out="$(command networksetup -listpreferredwirelessnetworks "$_wifi_iface" 2>/dev/null)"
+              fi
               if [[ -n $_pref_out ]]; then
                 # First preferred network is typically the connected one
                 local _pref_ssid
