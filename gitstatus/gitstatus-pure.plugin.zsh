@@ -206,7 +206,8 @@ _gitstatus_pure_query_sync() {
   else
     # Parse git status for staged/unstaged/conflicted/untracked files
     local status_output
-    status_output=$(command git -C "$dir" status --porcelain=v1 -uall 2>/dev/null)
+    local ignore_submodules=${POWERLEVEL9K_VCS_IGNORE_SUBMODULES:-dirty}
+    status_output=$(command git -C "$dir" status --porcelain=v1 -uall --ignore-submodules=$ignore_submodules 2>/dev/null)
     
     local line x y
     while IFS= read -r line; do
