@@ -560,11 +560,15 @@ _p9k_vcs_style() {
   if [[ -n $_p9k__ret ]]; then
     _p9k__ret[-1,-1]=''
   else
-    local style=%b
-    # Support bold styling via POWERLEVEL9K_VCS_*_BOLD parameter
+    local style
+    # Support bold styling via POWERLEVEL9K_VCS_*_BOLD parameter.
+    # When bold is enabled, use %B (bold on) instead of %b (bold off) to allow
+    # the entire VCS segment to render in bold (fixes romkatv/powerlevel10k#2859).
     local bold_var=_POWERLEVEL9K_VCS_${1}_BOLD
     if (( ${(P)bold_var:-0} )); then
-      style="%B${style}"
+      style=%B
+    else
+      style=%b
     fi
     _p9k_color prompt_vcs_$1 BACKGROUND "${__p9k_vcs_states[$1]}"
     _p9k_background $_p9k__ret
@@ -7916,6 +7920,11 @@ _p9k_init_params() {
   _p9k_declare -b POWERLEVEL9K_VCS_CONFLICTED_STATE 0
   _p9k_declare -b POWERLEVEL9K_HIDE_BRANCH_ICON 0
   _p9k_declare -b POWERLEVEL9K_VCS_HIDE_TAGS 0
+  # Bold the entire VCS segment text. Can be set per-state: POWERLEVEL9K_VCS_{CLEAN,MODIFIED,UNTRACKED,...}_BOLD.
+  _p9k_declare -b POWERLEVEL9K_VCS_BOLD 0
+  for state in CLEAN MODIFIED UNTRACKED CONFLICTED LOADING; do
+    _p9k_declare -b POWERLEVEL9K_VCS_${state}_BOLD $_POWERLEVEL9K_VCS_BOLD
+  done
   _p9k_declare -a POWERLEVEL9K_VCS_GIT_REMOTE_ICONS
   if (( $+_POWERLEVEL9K_VCS_GIT_REMOTE_ICONS )); then
     (( $#_POWERLEVEL9K_VCS_GIT_REMOTE_ICONS & 1 )) && _POWERLEVEL9K_VCS_GIT_REMOTE_ICONS+=('')
