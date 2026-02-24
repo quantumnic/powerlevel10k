@@ -9338,6 +9338,7 @@ _p9k_init_vcs() {
     (( $+commands[git] )) || { unfunction _p9k_preinit; return 1 }
     [[ \$ZSH_VERSION == ${(q)ZSH_VERSION} ]]                      || return
     [[ -r ${(q)gitstatus_dir}/gitstatus.plugin.zsh ]]             || return
+    [[ -r ${(q)gitstatus_dir}/gitstatus-git-backend.zsh ]] && builtin source ${(q)gitstatus_dir}/gitstatus-git-backend.zsh
     builtin source ${(q)gitstatus_dir}/gitstatus.plugin.zsh _p9k_ || return
     GITSTATUS_AUTO_INSTALL=${(q)GITSTATUS_AUTO_INSTALL}         \
       GITSTATUS_DAEMON=${(q)GITSTATUS_DAEMON}                   \
@@ -9354,6 +9355,11 @@ _p9k_init_vcs() {
           ${${_POWERLEVEL9K_VCS_RECURSE_UNTRACKED_DIRS:#0}:+-e} \
           -a POWERLEVEL9K
   }"
+  # Source pure-zsh git backend if available — provides automatic fallback when
+  # gitstatusd daemon is unavailable (e.g., Termux, exotic architectures) (#2899).
+  if [[ -r $gitstatus_dir/gitstatus-git-backend.zsh ]]; then
+    builtin source $gitstatus_dir/gitstatus-git-backend.zsh
+  fi
   builtin source $gitstatus_dir/gitstatus.plugin.zsh _p9k_ || return
   () {
     trap 'return 130' INT
