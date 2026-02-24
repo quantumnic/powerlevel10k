@@ -7021,6 +7021,8 @@ function _p9k_dump_state() {
   sysopen -a -m 600 -o creat,trunc -u fd -- $tmp || return
   {
     {
+      # Guard: skip stale dump if zsh version changed (prevents "bad substitution" errors).
+      print -r -- "[[ \$ZSH_VERSION == ${(q)ZSH_VERSION} ]] || return 0" >&$fd || return
       typeset -g __p9k_cached_param_pat=$_p9k__param_pat
       typeset -g __p9k_cached_param_sig=$_p9k__param_sig
       typeset -pm __p9k_cached_param_pat __p9k_cached_param_sig >&$fd || return
