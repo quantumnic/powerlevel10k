@@ -2,6 +2,16 @@
 
 All notable changes to this community fork of Powerlevel10k.
 
+## [v1.24.13] - 2026-02-24
+
+### Fixed
+- **vcs**: Fix VCS bold styling — `POWERLEVEL9K_VCS_*_BOLD` produced `%B%b` (bold on + bold off = no bold). Now correctly uses `%B` alone (#2859)
+- **gitstatus**: Auto-source pure-git backend in preinit and runtime paths, enabling automatic fallback on Termux and other platforms where gitstatusd fails to initialize (#2899)
+
+### Added
+- **vcs**: Add `POWERLEVEL9K_VCS_BOLD` global parameter that propagates to all per-state variants (CLEAN, MODIFIED, UNTRACKED, CONFLICTED, LOADING)
+- **tests**: Add `test_vcs_bold.zsh` with 10 unit tests for VCS bold styling
+
 ## [v1.24.12] - 2026-02-23
 
 ### Added
