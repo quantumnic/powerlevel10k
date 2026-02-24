@@ -2,6 +2,12 @@
 
 All notable changes to this community fork of Powerlevel10k.
 
+## [v1.24.14] - 2026-02-24
+
+### Added
+- **vcs**: Configurable `POWERLEVEL9K_VCS_IGNORE_SUBMODULES` for pure-git backend — set to `dirty` (default), `all`, `none`, or `untracked` to control `--ignore-submodules` in `git status` (#2876)
+- **tests**: Add `test_vcs_ignore_submodules.zsh` with 4 tests for submodule ignore configuration
+
 ## [v1.24.13] - 2026-02-24
 
 ### Fixed
