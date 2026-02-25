@@ -3801,7 +3801,11 @@ instant_prompt_time() {
   # The stash is evaluated at display time via ${(%)...}, so we wrap it to temporarily
   # override the locale. See issue #2871.
   _p9k_escape $_POWERLEVEL9K_TIME_FORMAT
-  local stash='${${__p9k_instant_prompt_time::=${${${__p9k_instant_prompt_lc_time_save::=$LC_TIME}+}${${LC_TIME::=C}+}${(%)${__p9k_instant_prompt_time_format::='$_p9k__ret'}}${${LC_TIME::=$__p9k_instant_prompt_lc_time_save}+}}}+}'
+  # Save LC_TIME, set to C for consistent formatting, format, then restore.
+  # Use ##* instead of + to discard the value silently: +} interprets the value
+  # as a parameter name, which causes "bad substitution" when it contains
+  # non-identifier chars like '.' or '-' (e.g., en_US.UTF-8).  Fixes #18.
+  local stash='${${__p9k_instant_prompt_time::=${${__p9k_instant_prompt_lc_time_save::=$LC_TIME}##*}${${LC_TIME::=C}##*}${(%)${__p9k_instant_prompt_time_format::='$_p9k__ret'}}${${LC_TIME::=$__p9k_instant_prompt_lc_time_save}##*}}+}'
   _p9k_escape $_POWERLEVEL9K_TIME_FORMAT
   _p9k_prompt_segment prompt_time "$_p9k_color2" "$_p9k_color1" "TIME_ICON" 1 '' $stash$_p9k__ret
 }
@@ -3846,7 +3850,8 @@ instant_prompt_date() {
   # Force LC_TIME=C during stash expansion to avoid localized day/month names in instant prompt.
   # Mirrors the fix in instant_prompt_time for issue #2871.
   _p9k_escape $_POWERLEVEL9K_DATE_FORMAT
-  local stash='${${__p9k_instant_prompt_date::=${${${__p9k_instant_prompt_lc_time_save_date::=$LC_TIME}+}${${LC_TIME::=C}+}${(%)${__p9k_instant_prompt_date_format::='$_p9k__ret'}}${${LC_TIME::=$__p9k_instant_prompt_lc_time_save_date}+}}}+}'
+  # Use ##* instead of + to discard locale values silently (see instant_prompt_time, #18).
+  local stash='${${__p9k_instant_prompt_date::=${${__p9k_instant_prompt_lc_time_save_date::=$LC_TIME}##*}${${LC_TIME::=C}##*}${(%)${__p9k_instant_prompt_date_format::='$_p9k__ret'}}${${LC_TIME::=$__p9k_instant_prompt_lc_time_save_date}##*}}+}'
   _p9k_escape $_POWERLEVEL9K_DATE_FORMAT
   _p9k_prompt_segment prompt_date "$_p9k_color2" "$_p9k_color1" "DATE_ICON" 1 '' $stash$_p9k__ret
 }
@@ -6557,7 +6562,7 @@ _p9k_set_instant_prompt() {
   [[ -n $RPROMPT ]] || unset RPROMPT
 }
 
-typeset -gri __p9k_instant_prompt_version=47
+typeset -gri __p9k_instant_prompt_version=48
 
 _p9k_dump_instant_prompt() {
   local user=${(%):-%n}
