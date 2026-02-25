@@ -2,6 +2,12 @@
 
 All notable changes to this community fork of Powerlevel10k.
 
+## [v1.24.15] - 2026-02-25
+
+### Fixed
+- **instant prompt**: Fix `(anon):197: bad substitution` when `LC_TIME` contains non-identifier characters like dots or hyphens (e.g., `en_US.UTF-8`). The LC_TIME save/restore in `instant_prompt_time` and `instant_prompt_date` stash expressions used `${${var::=val}+}` which interprets `val` as a parameter name; replaced with `${${var::=val}##*}` (#18)
+- Bump `__p9k_instant_prompt_version` to 48 to invalidate stale cached instant prompt files
+
 ## [v1.24.14] - 2026-02-24
 
 ### Fixed
