@@ -2,6 +2,17 @@
 
 All notable changes to this community fork of Powerlevel10k.
 
+## [v1.24.16] - 2026-04-28
+
+### Added
+- **migration**: Add `--check`/`--doctor` and `--dry-run` modes with timestamped backups, broader plugin manager/config detection, Homebrew tap detection, and clearer summary output.
+- **diagnostics**: Add `p10k doctor`, `p10k doctor gitstatus`, and `p10k gitstatus doctor` for local environment and gitstatus/VCS backend checks.
+- **ai_workspace**: Add an opt-in prompt segment for shells running under AI coding tools, with automatic detection for Codex, Claude, Gemini, Cursor, Windsurf, Aider, and VS Code agent environments.
+- **tests**: Add migration CLI, p10k doctor, and ai_workspace segment tests.
+
+### Fixed
+- **migration**: Handle missing or scalar `ZINIT` safely under `set -u` while checking Zinit plugin directories.
+
 ## [v1.24.15] - 2026-02-25
 
 ### Fixed
