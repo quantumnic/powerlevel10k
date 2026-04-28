@@ -2,7 +2,7 @@
 
 ## Current Maintainers
 
-- **Nicola Spieser** ([@redbasecap-buiss](https://github.com/redbasecap-buiss))
+- **Nicola Spieser** ([@quantumnic](https://github.com/quantumnic))
 
 ## Original Author
 
