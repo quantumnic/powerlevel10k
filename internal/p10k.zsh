@@ -1684,6 +1684,36 @@ prompt_host() {
 instant_prompt_host() { prompt_host; }
 
 ################################################################
+# AI workspace: show when the shell is running under an AI coding tool.
+function _p9k_ai_workspace_detect() {
+  if [[ -n $_POWERLEVEL9K_AI_WORKSPACE_CONTEXT ]]; then
+    typeset -g P9K_AI_WORKSPACE=$_POWERLEVEL9K_AI_WORKSPACE_CONTEXT
+  elif [[ -n ${CODEX_SANDBOX:-}${CODEX_SESSION_ID:-}${OPENAI_CODEX:-} ]]; then
+    typeset -g P9K_AI_WORKSPACE=codex
+  elif [[ -n ${CLAUDECODE:-}${CLAUDE_CODE:-}${CLAUDECODE_ENTRYPOINT:-} ]]; then
+    typeset -g P9K_AI_WORKSPACE=claude
+  elif [[ -n ${GEMINI_CLI:-}${GEMINI_CLI_VERSION:-} ]]; then
+    typeset -g P9K_AI_WORKSPACE=gemini
+  elif [[ -n ${CURSOR_TRACE_ID:-}${CURSOR_AGENT:-} ]]; then
+    typeset -g P9K_AI_WORKSPACE=cursor
+  elif [[ -n ${WINDSURF:-}${WINDSURF_SHELL:-} ]]; then
+    typeset -g P9K_AI_WORKSPACE=windsurf
+  elif [[ -n ${AIDER_MODEL:-}${AIDER_EDIT_FORMAT:-} ]]; then
+    typeset -g P9K_AI_WORKSPACE=aider
+  elif [[ -n ${VSCODE_INJECTION:-} ]]; then
+    typeset -g P9K_AI_WORKSPACE=agent
+  else
+    unset P9K_AI_WORKSPACE
+    return 1
+  fi
+}
+
+prompt_ai_workspace() {
+  _p9k_ai_workspace_detect || return
+  _p9k_prompt_segment "$0" "magenta" "$_p9k_color1" AI_WORKSPACE_ICON 1 '' "$_POWERLEVEL9K_AI_WORKSPACE_TEMPLATE"
+}
+
+################################################################
 # Toolbox: https://github.com/containers/toolbox
 function prompt_toolbox() {
   _p9k_prompt_segment $0 $_p9k_color1 yellow TOOLBOX_ICON 0 '' $P9K_TOOLBOX_NAME
@@ -8018,6 +8048,8 @@ _p9k_init_params() {
   _p9k_declare -e POWERLEVEL9K_CONTEXT_TEMPLATE "%n@%m"
   _p9k_declare -e POWERLEVEL9K_USER_TEMPLATE "%n"
   _p9k_declare -e POWERLEVEL9K_HOST_TEMPLATE "%m"
+  _p9k_declare -s POWERLEVEL9K_AI_WORKSPACE_CONTEXT ""
+  _p9k_declare -e POWERLEVEL9K_AI_WORKSPACE_TEMPLATE '${P9K_AI_WORKSPACE}'
   _p9k_declare -F POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD 3
   _p9k_declare -i POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION 2
   # Other options: "d h m s".
@@ -9660,6 +9692,8 @@ typeset -gr __p9k_p10k_usage="Usage: %2Fp10k%f %Bcommand%b [options]
 Commands:
 
   %Bconfigure%b  run interactive configuration wizard
+  %Bdoctor%b     print environment diagnostics
+  %Bgitstatus%b  print gitstatus diagnostics
   %Breload%b     reload configuration
   %Bsegment%b    print a user-defined prompt segment
   %Bdisplay%b    show, hide or toggle prompt parts
@@ -9746,6 +9780,14 @@ typeset -gr __p9k_p10k_reload_usage="Usage: %2Fp10k%f %Breload%b
 
 Reload configuration."
 
+typeset -gr __p9k_p10k_doctor_usage="Usage: %2Fp10k%f %Bdoctor%b [gitstatus]
+
+Print environment diagnostics. With %Bgitstatus%b, print only gitstatus diagnostics."
+
+typeset -gr __p9k_p10k_gitstatus_usage="Usage: %2Fp10k%f %Bgitstatus%b %Bdoctor%b
+
+Print diagnostics for gitstatus and the VCS backend."
+
 typeset -gr __p9k_p10k_finalize_usage="Usage: %2Fp10k%f %Bfinalize%b
 
 Perform the final stage of initialization. Must be called at the very end of zshrc."
@@ -9813,6 +9855,105 @@ Example: Print the current state of all prompt parts:
 # 1  -- reset-prompt blocked and not needed
 # 2  -- reset-prompt blocked and needed
 typeset -gi __p9k_reset_state
+
+function _p9k_doctor_line() {
+  local state=$1 label=$2 text=$3 color
+  case $state in
+    ok) color=2;;
+    warn) color=3;;
+    fail) color=1;;
+    *) color=6;;
+  esac
+  print -rP -- "  %F{$color}${(r:5:)state}%f  %B$label%b  $text"
+}
+
+function _p9k_doctor_gitstatus() {
+  print -rP -- "%Bgitstatus%b"
+
+  local gitstatus_dir=${_POWERLEVEL9K_GITSTATUS_DIR:-${__p9k_root_dir}/gitstatus}
+  if [[ -d $gitstatus_dir ]]; then
+    _p9k_doctor_line ok "directory" "${gitstatus_dir//\%/%%}"
+  else
+    _p9k_doctor_line fail "directory" "not found: ${gitstatus_dir//\%/%%}"
+  fi
+
+  if [[ -r $gitstatus_dir/gitstatus.plugin.zsh ]]; then
+    _p9k_doctor_line ok "plugin" "gitstatus.plugin.zsh is readable"
+  else
+    _p9k_doctor_line fail "plugin" "gitstatus.plugin.zsh is not readable"
+  fi
+
+  if [[ -r $gitstatus_dir/gitstatus-git-backend.zsh ]]; then
+    _p9k_doctor_line ok "fallback" "pure-zsh git backend is available"
+  else
+    _p9k_doctor_line warn "fallback" "pure-zsh git backend is missing"
+  fi
+
+  if (( _POWERLEVEL9K_DISABLE_GITSTATUS )); then
+    _p9k_doctor_line warn "daemon" "disabled by POWERLEVEL9K_DISABLE_GITSTATUS"
+  elif (( ! $+commands[git] )); then
+    _p9k_doctor_line warn "daemon" "git command is not available"
+  elif (( $+GITSTATUS_DAEMON_PID_POWERLEVEL9K )); then
+    _p9k_doctor_line ok "daemon" "running with pid $GITSTATUS_DAEMON_PID_POWERLEVEL9K"
+  elif (( $+functions[gitstatus_start_p9k_] )); then
+    _p9k_doctor_line warn "daemon" "plugin is loaded but daemon is not running"
+  else
+    _p9k_doctor_line warn "daemon" "not loaded; VCS segment may be inactive or not initialized yet"
+  fi
+
+  if [[ -n ${GITSTATUS_DAEMON:-} ]]; then
+    if [[ $GITSTATUS_DAEMON == /* ]]; then
+      [[ -x $GITSTATUS_DAEMON ]] &&
+        _p9k_doctor_line ok "GITSTATUS_DAEMON" "${GITSTATUS_DAEMON//\%/%%}" ||
+        _p9k_doctor_line warn "GITSTATUS_DAEMON" "not executable: ${GITSTATUS_DAEMON//\%/%%}"
+    else
+      _p9k_doctor_line warn "GITSTATUS_DAEMON" "must be an absolute path: ${GITSTATUS_DAEMON//\%/%%}"
+    fi
+  fi
+}
+
+function _p9k_doctor() {
+  print -rP -- "%BPowerlevel10k Doctor%b"
+
+  if [[ $ZSH_VERSION == (5.<1->*|<6->.*) ]]; then
+    _p9k_doctor_line ok "zsh" "$ZSH_VERSION"
+  else
+    _p9k_doctor_line fail "zsh" "$ZSH_VERSION is below the required 5.1"
+  fi
+
+  if [[ -r $__p9k_root_dir/internal/p10k.zsh ]]; then
+    _p9k_doctor_line ok "installation" "${__p9k_root_dir//\%/%%}"
+  else
+    _p9k_doctor_line fail "installation" "cannot read ${__p9k_root_dir//\%/%%}/internal/p10k.zsh"
+  fi
+
+  local cfg=${POWERLEVEL9K_CONFIG_FILE:-${ZDOTDIR:-$HOME}/.p10k.zsh}
+  if [[ -r $cfg ]]; then
+    _p9k_doctor_line ok "config" "${cfg//\%/%%}"
+  elif [[ -e $cfg ]]; then
+    _p9k_doctor_line warn "config" "exists but is not readable: ${cfg//\%/%%}"
+  else
+    _p9k_doctor_line warn "config" "not found: ${cfg//\%/%%}"
+  fi
+
+  case ${langinfo[CODESET]} in
+    utf-8|UTF-8|utf8|UTF8) _p9k_doctor_line ok "locale" "$langinfo[CODESET]";;
+    *) _p9k_doctor_line warn "locale" "${langinfo[CODESET]:-unknown}; UTF-8 is recommended";;
+  esac
+
+  if (( terminfo[colors] >= 8 )); then
+    _p9k_doctor_line ok "terminal colors" "$terminfo[colors]"
+  else
+    _p9k_doctor_line warn "terminal colors" "${terminfo[colors]:-0}; prompt styling may be limited"
+  fi
+
+  (( $+commands[git] )) &&
+    _p9k_doctor_line ok "git" "$commands[git]" ||
+    _p9k_doctor_line warn "git" "not found; VCS prompt support will be limited"
+
+  print ""
+  _p9k_doctor_gitstatus
+}
 
 function p10k() {
   [[ $# != 1 || $1 != finalize ]] || { p10k-instant-prompt-finalize; return 0 }
@@ -9949,6 +10090,23 @@ function p10k() {
       local REPLY
       local -a reply
       p9k_configure "$@" || return
+      ;;
+    doctor)
+      case ${2:-} in
+        "") (( ARGC == 1 )) || { print -rP -- $__p9k_p10k_doctor_usage >&2; return 1; }
+            _p9k_doctor;;
+        gitstatus) (( ARGC == 2 )) || { print -rP -- $__p9k_p10k_doctor_usage >&2; return 1; }
+                   _p9k_doctor_gitstatus;;
+        *) print -rP -- $__p9k_p10k_doctor_usage >&2; return 1;;
+      esac
+      ;;
+    gitstatus)
+      if [[ ${2:-} == doctor ]] && (( ARGC == 2 )); then
+        _p9k_doctor_gitstatus
+      else
+        print -rP -- $__p9k_p10k_gitstatus_usage >&2
+        return 1
+      fi
       ;;
     reload)
       if (( ARGC > 1 )); then

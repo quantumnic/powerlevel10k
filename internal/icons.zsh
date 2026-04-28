@@ -88,6 +88,7 @@ function _p9k_init_icons() {
         SWAP_ICON                      '\uE87D'$s             # 
         RAM_ICON                       '\uE1E2 '              # 
         SERVER_ICON                    '\uE895'$s             # 
+        AI_WORKSPACE_ICON              'AI'
         VCS_UNTRACKED_ICON             '\uE16C'$s             # 
         VCS_UNSTAGED_ICON              '\uE17C'$s             # 
         VCS_STAGED_ICON                '\uE168'$s             # 
@@ -247,6 +248,7 @@ function _p9k_init_icons() {
         SWAP_ICON                      '\uF0E4'$s             # 
         RAM_ICON                       '\uF0E4'$s             # 
         SERVER_ICON                    '\uF233'$s             # 
+        AI_WORKSPACE_ICON              'AI'
         VCS_UNTRACKED_ICON             '\uF059'$s             # 
         VCS_UNSTAGED_ICON              '\uF06A'$s             # 
         VCS_STAGED_ICON                '\uF055'$s             # 
@@ -407,6 +409,7 @@ function _p9k_init_icons() {
         SWAP_ICON                      "${CODEPOINT_OF_AWESOME_DASHBOARD:+\\u$CODEPOINT_OF_AWESOME_DASHBOARD$s}"
         RAM_ICON                       "${CODEPOINT_OF_AWESOME_DASHBOARD:+\\u$CODEPOINT_OF_AWESOME_DASHBOARD$s}"
         SERVER_ICON                    "${CODEPOINT_OF_AWESOME_SERVER:+\\u$CODEPOINT_OF_AWESOME_SERVER$s}"
+        AI_WORKSPACE_ICON              'AI'
         VCS_UNTRACKED_ICON             "${CODEPOINT_OF_AWESOME_QUESTION_CIRCLE:+\\u$CODEPOINT_OF_AWESOME_QUESTION_CIRCLE$s}"
         VCS_UNSTAGED_ICON              "${CODEPOINT_OF_AWESOME_EXCLAMATION_CIRCLE:+\\u$CODEPOINT_OF_AWESOME_EXCLAMATION_CIRCLE$s}"
         VCS_STAGED_ICON                "${CODEPOINT_OF_AWESOME_PLUS_CIRCLE:+\\u$CODEPOINT_OF_AWESOME_PLUS_CIRCLE$s}"
@@ -561,6 +564,7 @@ function _p9k_init_icons() {
         SWAP_ICON                      '\uF464'$s             # 
         RAM_ICON                       '\uF0E4'$s             # 
         SERVER_ICON                    '\uF0AE'$s             # 
+        AI_WORKSPACE_ICON              'AI'
         VCS_UNTRACKED_ICON             '\uF059'$s             # 
         VCS_UNSTAGED_ICON              '\uF06A'$s             # 
         VCS_STAGED_ICON                '\uF055'$s             # 
@@ -722,6 +726,7 @@ function _p9k_init_icons() {
         SWAP_ICON                      '\uF464'$s             # 
         RAM_ICON                       '\uF0E4'$s             # 
         SERVER_ICON                    '\uF0AE'$s             # 
+        AI_WORKSPACE_ICON              'AI'
         VCS_UNTRACKED_ICON             '\uF059'$s             # 
         VCS_UNSTAGED_ICON              '\uF06A'$s             # 
         VCS_STAGED_ICON                '\uF055'$s             # 
@@ -875,6 +880,7 @@ function _p9k_init_icons() {
         SWAP_ICON                      'swap'
         RAM_ICON                       'ram'
         SERVER_ICON                    ''
+        AI_WORKSPACE_ICON              'AI'
         VCS_UNTRACKED_ICON             '?'
         VCS_UNSTAGED_ICON              '!'
         VCS_STAGED_ICON                '+'
@@ -1030,6 +1036,7 @@ function _p9k_init_icons() {
         SWAP_ICON                      'SWP'
         RAM_ICON                       'RAM'
         SERVER_ICON                    ''
+        AI_WORKSPACE_ICON              'AI'
         VCS_UNTRACKED_ICON             '?'
         VCS_UNSTAGED_ICON              '\u25CF'               # ●
         VCS_STAGED_ICON                '\u271A'               # ✚
