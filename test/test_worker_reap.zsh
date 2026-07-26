@@ -7,6 +7,7 @@ local root=${0:A:h}/..
 source $root/internal/worker.zsh
 
 local worker_main=$(functions _p9k_worker_main)
+local gitstatus_daemon=$(<$root/gitstatus/gitstatus.plugin.zsh)
 local -i pass=0 fail=0
 
 function assert_contains() {
@@ -29,6 +30,18 @@ assert_contains \
   "worker reaps the completed process-substitution child" \
   "$worker_main" \
   'wait $async_pid'
+assert_contains \
+  "worker exits when the parent process dies" \
+  "$worker_main" \
+  'local -i _p9k_worker_orig_ppid=$sysparams[ppid]'
+assert_contains \
+  "gitstatus daemon monitors for orphaning" \
+  "$gitstatus_daemon" \
+  'local orig_ppid=$sysparams[ppid]'
+assert_contains \
+  "gitstatus daemon kills its process group on orphaning" \
+  "$gitstatus_daemon" \
+  'kill -- -$pgid 2>/dev/null'
 
 print
 if (( fail )); then
