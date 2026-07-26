@@ -467,18 +467,6 @@ function _gitstatus_daemon"${1:-}"() {
     }
   } &!
 
-  {
-    local orig_ppid=$sysparams[ppid]
-    while true; do
-      command sleep 2
-      if [[ $sysparams[ppid] != $orig_ppid ]]; then
-        zf_rm -f -- $file_prefix.lock $file_prefix.fifo
-        kill -- -$pgid 2>/dev/null
-        break
-      fi
-    done
-  } &!
-
   (( lock_fd == -1 )) && return
 
   {
