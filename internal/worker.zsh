@@ -20,8 +20,9 @@ function _p9k_worker_main() {
   function _p9k_worker_async() {
     local fd async=$1
     sysopen -r -o cloexec -u fd <(() { eval $async; } && print -n '\x1e') || return
+    local async_pid=$sysparams[procsubstpid]
     (( ++_p9k_worker_inflight[$_p9k_worker_request_id] ))
-    _p9k_worker_fds[$fd]=$_p9k_worker_request_id$'\x1f'$2
+    _p9k_worker_fds[$fd]=$_p9k_worker_request_id$'\x1f'$2$'\x1f'$async_pid
   }
 
   trap '' PIPE
@@ -58,8 +59,11 @@ function _p9k_worker_main() {
           done
           local cb=$_p9k_worker_fds[$fd]
           _p9k_worker_request_id=${cb%%$'\x1f'*}
+          local async_pid=${cb##*$'\x1f'}
+          cb=${cb%$'\x1f'*}
           unset "_p9k_worker_fds[$fd]"
           exec {fd}>&-
+          [[ $async_pid == <1-> ]] && wait $async_pid 2>/dev/null || true
           if [[ $REPLY == *$'\x1e' ]]; then
             REPLY[-1]=""
             () { eval $cb[$#_p9k_worker_request_id+2,-1] }
