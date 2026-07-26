@@ -11,6 +11,7 @@ function _p9k_worker_main() {
   local _p9k_worker_request_id
   local -A _p9k_worker_fds       # fd => id$'\x1f'callback
   local -A _p9k_worker_inflight  # id => inflight count
+  local -i _p9k_worker_orig_ppid=$sysparams[ppid]
 
   function _p9k_worker_reply() {
     print -nr -- e${(pj:\n:)@}$'\x1e' || kill -- -$_p9k_worker_pgid
@@ -20,14 +21,19 @@ function _p9k_worker_main() {
   function _p9k_worker_async() {
     local fd async=$1
     sysopen -r -o cloexec -u fd <(() { eval $async; } && print -n '\x1e') || return
+    local async_pid=$sysparams[procsubstpid]
     (( ++_p9k_worker_inflight[$_p9k_worker_request_id] ))
-    _p9k_worker_fds[$fd]=$_p9k_worker_request_id$'\x1f'$2
+    _p9k_worker_fds[$fd]=$_p9k_worker_request_id$'\x1f'$2$'\x1f'$async_pid
+  }
+
+  function _p9k_worker_check_parent() {
+    [[ $sysparams[ppid] == $_p9k_worker_orig_ppid ]]
   }
 
   trap '' PIPE
 
   {
-    while zselect -a ready 0 ${(k)_p9k_worker_fds}; do
+    while _p9k_worker_check_parent && zselect -a ready 0 ${(k)_p9k_worker_fds}; do
       [[ $ready[1] == -r ]] || return
       for fd in ${ready:1}; do
         if [[ $fd == 0 ]]; then
@@ -58,8 +64,11 @@ function _p9k_worker_main() {
           done
           local cb=$_p9k_worker_fds[$fd]
           _p9k_worker_request_id=${cb%%$'\x1f'*}
+          local async_pid=${cb##*$'\x1f'}
+          cb=${cb%$'\x1f'*}
           unset "_p9k_worker_fds[$fd]"
           exec {fd}>&-
+          [[ $async_pid == <1-> ]] && wait $async_pid 2>/dev/null || true
           if [[ $REPLY == *$'\x1e' ]]; then
             REPLY[-1]=""
             () { eval $cb[$#_p9k_worker_request_id+2,-1] }
