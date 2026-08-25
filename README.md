@@ -49,8 +49,7 @@ git remote set-url origin https://github.com/quantumnic/powerlevel10k.git
 git pull
 ```
 
-For plugin managers (Zinit, Zim, Antidote, etc.), replace `quantumnic/powerlevel10k` with
-`quantumnic/powerlevel10k` in your `~/.zshrc` (or `~/.zimrc`, `~/.zsh_plugins.txt`) and
+For plugin managers (Zinit, Zim, Antidote, etc.), replace `romkatv/powerlevel10k` with `quantumnic/powerlevel10k` in your `~/.zshrc` (or `~/.zimrc`, `~/.zsh_plugins.txt`) and
 reinstall/update.
 
 ## Getting started
