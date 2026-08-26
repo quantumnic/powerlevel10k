@@ -31,7 +31,7 @@ https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/prompt-styl
 
 ## Migrating from quantumnic/powerlevel10k
 
-Already using the original quantumnic/powerlevel10k? Migration is easy — your `~/.p10k.zsh`
+Already using the original romkatv/powerlevel10k? Migration is easy — your `~/.p10k.zsh`
 configuration works as-is, no changes needed.
 
 **Automatic (recommended):**
